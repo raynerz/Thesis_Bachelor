@@ -94,29 +94,29 @@ Computer vision methods for the automated segmentation of inner retinal and chor
 The contribution of this project lies in the documentation and explanation of the most frequent methods used for measuring retinal thickness from an algorithmic perspective in order to provide a framework to easily extract features from OCT B-scans. The report is structured as follows. Section 2 presents an introduction to the medical background needed in order to understand the retinal structure, functions and the importance of retinal layer thickness measurement. Section 3 will offer an overview of the most common techniques used in the industry for carrying out retinal layer segmentation from OCT scans. Section 4 will offer the implementation and results of the methods discussed. Finally, section 5 and 6 will respectively offer a conclusion and an overview of the future work to be carried out by the authors. \\
 
 \subsection{Motivation}
-The choroid is one of the layers of the eyeball wall, located between the sclera on the outside and the retina on the inside. The choroid is responsible for the irrigation and circulation of the ocular metabolism in order to supply the outer retina with oxygen and metabolites and is therefore highly vascularised. X2
+The choroid is one of the layers of the eyeball wall, located between the sclera on the outside and the retina on the inside. The choroid is responsible for the irrigation and circulation of the ocular metabolism in order to supply the outer retina with oxygen and metabolites and is therefore highly vascularised. \cite{WikiChoroid}
 
-Its thickness can depend on several factors, including age. It has been found that the thickness of the choroid decreases with age, however several recent research studies on choroidal development during childhood and adolescence contradict this finding. In particular, subfoveal choroidal thickness has been found to be negatively correlated in Asian children, where the prevalence of myopia is higher. Longitudinal studies of adolescents have shown that the eyeball lengthens during the development of myopia. In the case of severe myopia this process is associated with a significant thinning of the choroidal thickness. Therefore the following markers are strongly considered for monitoring the progression of myopia and for predicting myopia: choroidal thickness and structure.
+Its thickness can depend on several factors, including age. It has been found that the thickness of the choroid decreases with age, however several recent research studies on choroidal development during childhood and adolescence contradict this finding. In particular, subfoveal choroidal thickness has been found to be negatively correlated in Asian children, where the prevalence of myopia is higher. Longitudinal studies of adolescents have shown that the eyeball lengthens during the development of myopia. In the case of severe myopia this process is associated with a significant thinning of the choroidal thickness. Therefore the following markers are strongly considered for monitoring the progression of myopia and for predicting myopia: choroidal thickness and structure.\cite{ronchetti2019}
 
-The main challenge in detecting disease progression is to detect even small changes as early as possible. Optical coherence tomography (OCT) imaging allows the capture of highly resolved details of the retina and choroid to detect minute changes in the structure of the retina. X1
+The main challenge in detecting disease progression is to detect even small changes as early as possible. Optical coherence tomography (OCT) imaging allows the capture of highly resolved details of the retina and choroid to detect minute changes in the structure of the retina.\cite{ronchetti2019}
 
 In order to be able to detect changes in choroidal thickness it is necessary to be able to detect the different layers of the eyeball wall and their borders from OCT scans in order to compare results over several years. 
 However, a manual approach raises two important problems: firstly, the number of scans to be processed (layer identification) is considerable, secondly, the high vascularity of the choroid makes it difficult to distinguish its border with the sclera.
 
+\subsection{Goal}
 The aim of this project is to develop a Deep Learning model capable of processing  ophthalmic  OCT  images  and predicts  synthetic  vitreal,  retinal,  choroidal  and  scleral  semantic  segmentations  based  on  a  combination  of  Image  Augmentation  techniques  and  a Convolutional Neural Network presenting an encoder-decoder structure with an accuracy of at least XX\%. This will automate the measurements made on the scans and considerably reduce the time needed to produce a result, thus reducing the workload of the experts and ensuring a certain accuracy in the detection of the choroid. 
 
-
-\subsection{Goal}
 \subsection{Note on the document and work}
 \subsubsection{Tools version}
 The program at its current state is dependent on the following frameworks : 
     
-    \begin{table}[]
+    \begin{table}[H]
     \begin{tabular}{ll}
     Framework & Version \\
+    Python & 3.8.5 \\
     Keras     & 2.4.3   \\
     Opencv-python  &   4.5.1.48 \\
-    Python & 3.8.5 \\
+    
               &        
     \end{tabular}
     \end{table}
