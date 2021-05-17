@@ -63,7 +63,7 @@ Generation of synthetic ground truth for ophthalmic medical image analysis}\\
 \vspace*{1cm}
 
 \begin{abstract}
-Machine Learning framework that process ophthalmic OCT images and predicts synthetic vitreal, retinal, choroidal and scleral semantic segmentations based on a combination of Image Augmentation techniques and a Convolutional Neural Network presenting an encoder-decoder structure. After cross-validation the results indicate that our framework can automatically segment a regular OCT scan with a mean Jaccard coeficient of 96,97\%, showcasing a hamming distance of xx\% when compared to human ophthalmologists. Furthermore, the authors describe a detailed workflow involving the utilisation of state of the art machine learning techniques with comprehensive explanations on the data preparation, model implementation and evaluation criteria.  
+Machine Learning framework that process ophthalmic OCT images and predicts synthetic vitreal, retinal, choroidal and scleral semantic segmentations based on a combination of Image Augmentation techniques and a Convolutional Neural Network presenting an encoder-decoder structure. After cross-validation the results indicate that our framework can automatically segment a regular OCT scan with a mean Jaccard coeficient of 96,87\%, showcasing a hamming distance of xx\% when compared to human ophthalmologists. Furthermore, the authors describe a detailed workflow involving the utilisation of state of the art machine learning techniques with comprehensive explanations on the data preparation, model implementation and evaluation criteria.  
 \end{abstract}
 
 \vspace{2cm}
@@ -88,54 +88,118 @@ Submission deadline: & Thursday, June 17th, 2021
 \pagenumbering{arabic}
 %Und nun kommen wir zur Arbeit und fangen an die Seiten mit Arabischen Zahlen zu zählen
 
-\section{TODO Introduction}\label{s:introduction} 
-Computer vision methods for the automated segmentation of inner retinal and choroidal layers obtained from optical coherence tomography (OCT) imaging \cite{Ronchetti2019statistic} can be used to generate a reliable set of annotated scans. Such annotations can be used to develop a machine learning model to accurately detect retinal (and choroidal) thickness changes.  This provides researchers and clinicians with reliable and factual information that can help in the diagnosis and monitoring of various ocular disorders and diseases. \\
-
-The contribution of this project lies in the documentation and explanation of the most frequent methods used for measuring retinal thickness from an algorithmic perspective in order to provide a framework to easily extract features from OCT B-scans. The report is structured as follows. Section 2 presents an introduction to the medical background needed in order to understand the retinal structure, functions and the importance of retinal layer thickness measurement. Section 3 will offer an overview of the most common techniques used in the industry for carrying out retinal layer segmentation from OCT scans. Section 4 will offer the implementation and results of the methods discussed. Finally, section 5 and 6 will respectively offer a conclusion and an overview of the future work to be carried out by the authors. \\
-
+\section{Introduction}\label{s:introduction} 
 \subsection{Motivation}
-The choroid is one of the layers of the eyeball wall, located between the sclera on the outside and the retina on the inside. The choroid is responsible for the irrigation and circulation of the ocular metabolism in order to supply the outer retina with oxygen and metabolites and is therefore highly vascularised. \cite{WikiChoroid}
+The choroid is one of the layers of the eyeball wall, located between the sclera on the outside and the retina on the inside. The choroid is responsible for the irrigation and circulation of the ocular metabolism in order to supply the outer retina with oxygen and metabolites and is therefore highly vascularised. \cite{choroidExpl}
 
-Its thickness can depend on several factors, including age. It has been found that the thickness of the choroid decreases with age, however several recent research studies on choroidal development during childhood and adolescence contradict this finding. In particular, subfoveal choroidal thickness has been found to be negatively correlated in Asian children, where the prevalence of myopia is higher. Longitudinal studies of adolescents have shown that the eyeball lengthens during the development of myopia. In the case of severe myopia this process is associated with a significant thinning of the choroidal thickness. Therefore the following markers are strongly considered for monitoring the progression of myopia and for predicting myopia: choroidal thickness and structure.\cite{ronchetti2019}
+Its thickness can depend on several factors, including age, blood pressure, anatomic pathologies, etc. It has been found that the thickness of the choroid decreases with age, however several recent research studies on choroidal development during childhood and adolescence contradict this finding. In particular, subfoveal choroidal thickness has been found to be negatively correlated in Asian children, where the prevalence of myopia is higher. Longitudinal studies of adolescents have shown that the eyeball lengthens during the development of myopia. In the case of severe myopia this process is associated with a significant thinning of the choroidal thickness. Therefore the choroidal structure and thickness are strongly considered for monitoring the progression of myopia.\cite{ronchetti2019}
 
-The main challenge in detecting disease progression is to detect even small changes as early as possible. Optical coherence tomography (OCT) imaging allows the capture of highly resolved details of the retina and choroid to detect minute changes in the structure of the retina.\cite{ronchetti2019}
+The main challenge in detecting disease progression is to detect even small changes as early as possible. Optical coherence tomography (OCT) imaging allows the capture of highly resolved details of the retina and choroid to detect minute changes in the structure of both membranes.\cite{ronchetti2019}
 
-In order to be able to detect changes in choroidal thickness it is necessary to be able to detect the different layers of the eyeball wall and their borders from OCT scans in order to compare results over several years. 
-However, a manual approach raises two important problems: firstly, the number of scans to be processed (layer identification) is considerable, secondly, the high vascularity of the choroid makes it difficult to distinguish its border with the sclera.
+In order to be able to detect changes in choroidal thickness it is necessary to be able to detect all the different layers of the eyeball wall and their interfaces from OCT scans in order to compare results over several years. 
+However, a manual approach raises two important problems: firstly, the number of scans to be processed (layer identification) is considerable \cite{Maloca2019}, secondly, the high vascularity of the choroid makes it difficult to distinguish its border with the sclera \cite{ronchetti2019}.
 
 \subsection{Goal}
-The aim of this project is to develop a Deep Learning model capable of processing  ophthalmic  OCT  images  and predicts  synthetic  vitreal,  retinal,  choroidal  and  scleral  semantic  segmentations  based  on  a  combination  of  Image  Augmentation  techniques  and  a Convolutional Neural Network presenting an encoder-decoder structure with an accuracy of at least XX\%. This will automate the measurements made on the scans and considerably reduce the time needed to produce a result, thus reducing the workload of the experts and ensuring a certain accuracy in the detection of the choroid. 
+The aim of this project is to develop a Deep Learning model capable of processing  ophthalmic  OCT  images  and predicts  synthetic  vitreal,  retinal,  choroidal  and  scleral  semantic  segmentations  based  on  a  combination  of  Image  Augmentation  techniques  and  a Convolutional Neural Network presenting an encoder-decoder structure with a mean Jaccard coefficient of at least 95\%   \cite{Maloca2019}. This will automate the measurements made on the scans and considerably reduce the time needed to produce a result, thus reducing the workload of the experts and ensuring a certain accuracy and standardization in the detection of the choroid. 
 
-\subsection{Note on the document and work}
-\subsubsection{Tools version}
-The program at its current state is dependent on the following frameworks : 
+\subsection{Contributions}
+
+The contribution of this project lies in the setup and documentation of a software framework capable of generating ground truth images for ophthalmic image medical analysis where the vitreal, retinal, choroidal and scleral compartments are clearly defined. The mentioned framework includes image pre-processing, model implementation and results evaluation. 
+
+\subsection{Material and Methods}
+
+\subsubsection{Methodology}
+
+A Convolutional Neural Network (CNN) was designed based on the U-Net CNN model created by Prof. Dr. O. Ronneberger in 2015 \cite{Ronneberger2015}. Following the general machine learning worklow, we used different techniques of data pre-processing that include vectorization, categorization and augmentation of the annotated images in order to train the network. Hyperparameters were modified both empirically from the result of several training sessions and using best algorithmic practices for weighting and learning rate selection. Finally, the images resulting of the CNN predictions are evaluated by using different metrics commonly tracked on Machine Learning (ML) projects like the Dice and Jacard coeficients, sensitivity, specificity and for evaluating the loss a weighted version of the categorical crossentropy. Statistical Rigurosity??????
+
+\subsubsection{Data}
+
+The OCT B-Scans used in this project are a subset of a total 180 3D OCT volume stack data-set pairs of 8-18 years old Asians, from urban regions with a high prevalence of myopia. The subject were healthy with globally good distance and near vision, no systemic and ocular diseases, ocular trauma or surgery\cite{ronchetti2019}.The volunteers were measured twice at different times: half of their left eye, then half of their right eye. Each 3D-volume stack consisted of 25 B-scans of 500 × 768 pixels. The images were acquired by a dual-wavelength eye-tracking OCT system operating simultaneously at the 870 and 1075 nm bands. This system was developed by HuCE-opto-Lab at the Bern University of Applied Sciences in Biel, Switzerland. \cite{ronchetti2019}. According to the source of the data \cite{ronchetti2019} written consent was obtained from both volunteers and, when necessary, their parents. The study protocol was approved by the Human Subjects Ethics Sub-committee of The Hong Kong Polytechnic University and was conducted in adherence to the tenets of the Declaration of Helsinki.
+
+\subsubsection{Tools}
+The framework at its current state is dependent on the following tools : 
     
     \begin{table}[H]
     \begin{tabular}{ll}
-    Framework & Version \\
+    Tool & Version \\
     Python & 3.8.5 \\
     Keras     & 2.4.3   \\
+    Tensorflow & 2.4.0 \\
     Opencv-python  &   4.5.1.48 \\
-    
-              &        
+    Numpy & 1.19.2 \\
+    Glob2  &  0.7 \\
+    Matplotlib & 3.3.2
     \end{tabular}
     \end{table}
 
-\subsubsection{Document organisation}
+
 
 \section{Medical Background}\label{s:medical_background}
 
-The retina is a layer of tissue situated in the periphery of the ocular globe. As a part of the central nervous system, the retina "converts the graded electrical activity of photoreceptors into action potentials that travel to the brain via axons in the optic nerve" \cite{purves2001}. In other terms, it converts light into electric signals that are sent directly to the brain and are interpreted as images. \\
+The eye is a sensory organ that has the function of converting light waves into electrical signals that are interpreted by the brain in the form of images \cite{Rhoades2017}. The eyeball as a component of the eye and its vision system is composed by two different segments of spheres named the anterior and posterior segments \cite{snell1998}.
 
-Measuring thickness changes in the retina allows to detect the evolution of certain diseases like Diabetes \cite{Jiang2018}, Alzheimer, Glaucoma and other neurodegenerative diseases \cite{DENHAAN2017162}. For example, in the case of Alzheimer is has been detected in \cite{DENHAAN2017162} that both measuring methods, Mean Peripapillary Retinal Nerve Fiber Layer (RNFL) and macular thickness show a consistent retinal thinning for diagnosed patients when compared to healthy individuals \cite{DENHAAN2017162}.\\
+The anterior segment is the most front part of the eye, it hosts the cornea, iris and lens and serves to regulate the intensity of the light that is transmitted to the retina which is located in the posterior segment of the eye alongside the vitreous body, choroid and sclera. The function of the posterior segment is to translate light waves into electrical signals that are transported to the brain via the optical nerve located in the back of the eyeball. 
 
-The process of measuring retinal thickness involves taking a cross sectional scan of the retina and anterior segment, with the help of an imaging procedure known as Optical Coherence Tomography (OCT). Ocular Bidimensional OCT, is a standard, non-invasive procedure in the field of ophthalmology and consist on a micrometer resolution scan of a 2D eye section obtained by emitting low coherence light waves which allow high resolution longitudinal imaging of the corneal, retinal and chroroidal structures \cite{Ronchetti2019statistic}. Locating the retina within a Bidimensional OCT scan (B-Scan) involves the detection of the retina's two boundaries, the Inner Limiting Membrane (ILM) and the Bruchs Membrane (BM). On one side, the ILM serves as a barrier between the retina and the vitreous body \cite{MACNAIR2015343} while the BM divides the retina from the choroid \cite{BOOIJ20101}. The retinal thickness is defined as the average of all Euclidean/vertical distance in the $z$ axis direction between the ILM and BM boundaries \cite{Ronchetti2019statistic}. Another approach to measuring thickness is to define 5 symmetrical regions with respect to the vertical direction, we will name this regions A (subfoveal), B (parafoveal) and C (perifoveal), the thickness values for such regions are provided in the form of the mean of all height differences within a particular section A, B or C respectively \cite{Ronchetti2019statistic} (See Figure \ref{fig:final_rendering}). 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./images/anatomy-of-the-eye.jpg}
+    \caption{Anatomy of the Eye \cite{eyeanatomy-pic}}
+    \label{fig:eye-anatomy}
+\end{figure}
+
+The scope of this report is limited to the posterior segment of the eyeball as the membranes that are present in it have significant clinical value to ophthalmologists in the analysis and diagnosis of different type of diseases, like myopia and other other ocular diseases \cite{Ronchetti2017}. In particular, we will be focused in the vitreous body, retina, choroid and sclera as they will form integral part of the set of annotations developed for our research in the field of machine learning. 
+
+The vitreous body is an structure characterized by a colorless and transparent gel, mainly composed by water and other aminoacids, proteins, salts and acids. It's located between the lens and the retina and occupies 4/5 of the total volume of the eye and serves mainly to transmit light from the lens to the retina and it's believed that it contributes to the convergence power of the eye \cite{snell1998}. 
+
+Once the light has traveled through the vitreous body, it reaches the retina which is a tissue layer envolving the vitreous. As a part of the central nervous system, the retina "converts the graded electrical activity of photoreceptors into action potentials that travel to the brain via axons in the optic nerve" \cite{purves2001}. In other terms, it converts light into electric signals that are sent to the brain and are interpreted as images.
+
+Supporting the retinal function, between the retina and sclera, the choroid irrigates the outer retina with oxigen due to it's vascular structure through an intrincated layer of capillaries which are connected to arteries via the choroid's vessel layer \cite{snell1998}\cite{choroidExpl}. Several studies \cite{ronchetti2019}\cite{Ronchetti2018} indicate that choroidal thickness has a positive correlation with the development of myopia, which is part of the motivation of this work. 
+
+Finally, the sclera protects the inner part of the ocular globe due to its collagenous structure. Together with the cornea, it serves to contain the internal pressure of the eye and also to contain the forces created by the external muscles of the eye during eye movement \cite{Meek2008}.
 
 \section{Technical Background}\label{TechBack}
 
+
 \subsection{OCT}
-There are several approaches for detecting retinal boundaries in OCT B-scans, among them we can cite pixel intensity variations, texture analysis and graph search based segmentation techniques. Pixel intensity variations are often used when calculating the total retinal thickness \cite{Alonso-Caneiro2013}, the method involves a series of computer graphic processing steps where each pixel of the image is compared to a threshold chosen according to the color intensity of the pixels that contain the information about the location of the boundary \cite{Fabritius:09}. In the case of the ILM, it can be easily extracted because the lens pixels in the OCT scans are mostly black while the membrane's pixels are mostly white, this is mainly due to the density of the element, the more dense the element is, the whiter it will appear in the image \cite{Brar597}. Therefore, taking the image from the top left corner, one can run a search algorithm that finds the first white pixel \footnote{The first pixel that is over the threshold} from top to bottom and return its position. Running this same algorithm across the $x$ axis produces us an array of pixels that can be smoothed by using cubic-spline interpolations that corresponds to the ILM. The process for extracting the BM inner-most layer is the same, since the sclera presents opaque pixels that can be omitted by the algorithm, the process would start from the bottom left corner and runs the algorithm from bottom to top searching white pixels until it reaches the BM.  
+Optical Coherence Tomography (OCT) is the standard technique for producing accurate visualizations of ophthalmic medical images \cite{Garrido2014}. Since OCT scan uses near-infrared low-coherence light waves to produce measurements of the reflectivity vs depth also known as A-Scans\cite{Garrido2014} there is no need for using invasive procedures to extract information from the ocular globe structure. Several A-Scans from consecutive zones can be combined in order to form a 2D image of the posterior segment of the eye where the vitreous, retina, choroid and sclera can be clearly located. Finally, a contiguous set of B-Scans produces a volumetric image that ophtalmologist can use to first evaluate the retinal and choroidal structure and second calculate the layers thickness and issue diagnoses on several type of diseases including various ocular diseases \cite{ronchetti2019}, Diabetes \cite{Jiang2018}, Alzheimer, Glaucoma and other neurodegenerative diseases \cite{DENHAAN2017162}.   
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{./images/csm_ABC_scans.png}
+    \caption{Scan Types in Optical Coherence Tomography \cite{Willdeman2016}}
+    \label{fig:mb-oct-abcscans}
+\end{figure}
+
+As stated in the motivation of this thesis, cretinal and choroidal thickness can be measured from OCT scans with the help annotated ground truths establishing the locations of the membranes' boundaries. In the case of the retina, the Internal Limiting Membrane (ILM) divides it from Vitreous on the upper boundary \cite{MACNAIR2015343}, while the Bruchs Membrane (BM) divides the retina from the choroid \cite{BOOIJ20101} serving as the retina's bottom boundary. Subsequently, the Choroidal-Scleral Interface separates the choroid from the sclera \cite{Ronchetti2018}. The mentioned boundaries create a segmentation map within OCT B-Scans where the Vitreous Body, Retina, Choroid and Sclera can be analysed as presented in figure \ref{fig:annotated-oct-scan}. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./images/OCT-Scan.png}
+    \caption{Annotated OCT Scan \cite{ronchetti2019}}
+    \label{fig:annotated-oct-scan}
+\end{figure}
+
 \subsection{Convolutional Neural Networks}
+
+A Convolutional Neural Network (CNNs) is a powerful family of Neural Networks inspired by biological processes and containing Convolutional Layers, used in the field of Deep Leaning. The connection pattern of its neurons is inspired by the visual cortex of animals. Modern CNNs are effective in obtaining accurate models, requiring fewer parameters than fully connected architectures, and are often more computationally efficient because convolutions are easily parallelized on GPU cores.\cite{DIDLBook} CNN-based architectures are common in the computer vision field, as they are prized for their efficiency. 
+
+To be functional, Convolutional Networks need some operations, here we will see the basic and most important ones, the Convolutional Layer itself, padding and stride, pooling layers the use of channels at each layer and the architecture of the modern CNN.
+
+In the case where one wishes to process datasets by collecting and annotating pixels of images one can quickly end up with a network having huge dimensions leading to poor GPU performance, for this reason CNNs are used for data that is not tabular (data consisting of rows corresponding to examples and columns corresponding to features).\cite{DIDLBook} The main role of the CNN is to facilitate the processing of images by reducing them to a form that is easier to examine without losing the features that are essential in the obtaining of a good prediction.
+
+
+An important concept of CNN is spatial invariance, which means that object recognition is not sensitive to their position in the image. In computer vision, adding convolution to the neural network allows the addition of an inductive visual prior whereby objects can appear anywhere.  Sharing the weights over the location of the object greatly reduces the parameters to be learned, the convolution is moved if the object is moved.\cite{CNNSpatialLocation} The earlies layers of our network should be implementing translation invariance, meaning that it should respond similarly  regardless of where the objects appears in the image. And they should focus on local regions (locality principe) without regard for the contents of the image in distant regions. \cite{DIDLBook}
+
+The translation invariance implies that a shift in the input \(x\) should lead to a shift in the hidden representation \(H\) (represented as matrices in mathematics and as two-dimensional tensors in code). 
+This is a convolution as the weighting pixels at \((i + a, j + b)\) in the vicinity of location
+\((i, j)\) with coefficients \([V]_{a,b}\) to obtain the value \([H]_{i,j}\) .: 
+\[[H]_{i,j} = u + \sum_a\sum_b[V]_{a,b}[X]_{i+a,j+b}\]
+Note that both X and H have the same shape and \([X]_{i,j}\) and \([H]_{i,j}\) denote the pixel at location \((i, j)\) in the input image and hidden representation. The translation invariance is only possible if V and u do not depend on \((i, j)\). \cite{DIDLBook}
+As described above, in the locality principle , it should no not be necessary to look far away from the location \((i, j)\) to retrives informations to describe what happends in \([H]_{i,j}\), outside a certain range \(|a| > \Delta \: or \: |b| > \Delta\), we should set  \([V]_{a,b} = 0\). And rewrite \([H]_{i,j}\) as follow \cite{DIDLBook}:
+\[[H]_{i,j} = u + \sum_{a=-\Delta}^{\Delta}\sum_{b=-\Delta}^{\Delta}[V]_{a,b}[X]_{i+a,j+b}\]
+
+
+
 \subsection{U-NET}
 
 
