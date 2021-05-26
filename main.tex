@@ -1,4 +1,4 @@
-%Vorlage
+\usepackage{}%Vorlage
 \documentclass[12pt,a4paper]{scrartcl}
 \usepackage[english]{babel} %Für die indirekte Angabe von Umlauten. Es müssen dann Umlaute wie folgt im Code angegeben werden: "a "o "u "s.
 
@@ -16,9 +16,6 @@
 \usepackage{array}% http://ctan.org/pkg/array
 \usepackage{floatrow}
 \graphicspath{{./images/}}
-%Quantum circuits http://mirrors.ibiblio.org/CTAN/graphics/pgf/contrib/quantikz/quantikz.pdf
-\usepackage{tikz}
-\usetikzlibrary{quantikz}
 \usepackage{lscape}
 \usepackage{setspace}
 \onehalfspacing
@@ -28,7 +25,29 @@
 \usepackage{multirow}
 \usepackage{csquotes} %Quotations
 %Code
-\usepackage{pythonhighlight}
+\usepackage{xcolor}
+\definecolor{verde}{rgb}{0.25,0.5,0.35}
+\definecolor{jpurple}{rgb}{0.5,0,0.35}
+\usepackage{listings}
+\lstset{
+  language=Python,
+  basicstyle=\footnotesize,
+  keywordstyle=\color{jpurple}\bfseries,
+  stringstyle=\color{red},
+  commentstyle=\color{verde},
+  morecomment=[s][\color{blue}]{/**}{*/},
+  extendedchars=true,
+  showspaces=false,
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\tiny,
+  breaklines=true,
+  backgroundcolor=\color{cyan!10},
+  breakautoindent=true,
+  captionpos=b,
+  xleftmargin=0pt,
+  tabsize=4
+}
 
 
 % Margins
@@ -114,7 +133,7 @@ From a medical perspective, the final output offers health care providers and ot
 
 A Convolutional Neural Network (CNN) was designed based on the U-Net CNN model created by Prof.~Dr.~O.~Ronneberger in 2015 \cite{Ronneberger2015}. According to the general machine learning worklow, we used different techniques of data pre-processing that include vectorization, categorization and augmentation of the annotated images in order to train the network. Hyperparameters were modified both empirically from the result of several training sessions and by using best algorithmic practices for weighting and learning rate selection. Finally, the images resulting of the CNN predictions are evaluated by using different metrics commonly tracked on machine learning projects like the Dice and Jaccard coefficients, sensitivity, specificity and for evaluating the loss a weighted version of the categorical crossentropy. 
 
-\subsubsection{Data}
+\subsubsection{Data}\label{Methodology:data}
 
 For this project we used a dataset composed of 755 OCT B-scans\footnote{See Sec. \ref{s:TechBack} for more information.} of 500*768 pixels. The data was obtained from asian patients in the age range of 8-18 years stemming from urban regions with a high prevalence of myopia. The subject were healthy with globally good distance and near vision, no systemic and ocular diseases, ocular trauma or surgery\cite{Ronchetti2019}. The images were acquired by a dual-wavelength eye-tracking OCT system operating simultaneously at the 870 and 1075 nm bands. This system was developed by HuCE-opto-Lab at the Bern University of Applied Sciences in Biel, Switzerland \cite{Ronchetti2019} \footnote{For more information about the OCT dataset we refer the interest reader to \cite{Ronchetti2019}}.
 
@@ -207,7 +226,6 @@ As described above, in the locality principle , it should no not be necessary to
 \label{eqn:locality}
 [H]_{i,j} = u + \sum_{a=-\Delta}^{\Delta}\sum_{b=-\Delta}^{\Delta}[V]_{a,b}[X]_{i+a,j+b}
 \end{equation}
-
 The operation for the spatial invariance \ref{eqn:invariance} and the locality \ref{eqn:locality} are convolutions since in mathematics the convolution between two function \(f\) and \(g\) with \({\rm I\!R}^d \rightarrow {\rm I\!R}\) is defined as follow \cite{DIDLBook}: 
 \begin{equation}
 (f*g)(x) = \int f(z)g(x-z)dz
@@ -239,16 +257,16 @@ as well as average -pooling would have given:
 \[average (3, 4, 6, 7) = 5,\]
 \[average (4, 5, 7, 8) = 6.\]
 
-\subsubsection{Softmax Operation}
-The Softmax function is a logistic function generalized to multiple dimensions and is used as an activation function for Neural Network. It is used to normalize the input vector z of K real numbers to a distribution consisting of K probabilities over predicted output classes. In this project we have four classes (vitreous, retina, choroid, sclera), therefore using softmax is relevant since it is a classifier which has excellent performance for multi-classification tasks and will often be used as the final layer of the network \cite{SoftMaxClassification}. 
+\subsubsection{Softmax Operation}\label{tech:softmax}
+The softmax function is a logistic function generalized to multiple dimensions and is used as an activation function for neural networks. It is used to normalize the input vector z of K real numbers to a distribution consisting of K probabilities over predicted output classes. In this project we have four classes (vitreous, retina, choroid, sclera), therefore using softmax is relevant since it is a classifier which has excellent performance for multi-classification tasks and will often be used as the final layer of the network \cite{SoftMaxClassification}. 
 The traditional softmax classifier can be described as follow: let  K be the number of classes, \(z_i\) we obtain  label and \(z_j\) the j-the element of the vector of class scores \cite{SoftMaxClassification, DIDLBook} :
 
 \begin{equation}
-\sigma(z_{ij}) = \frac{\exp{z_i}}{\sum_{j=1}^{K} \exp{z_j}}
+\sigma(z_{ij}) = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}
 \end{equation}
 Once the convolution and pooling function have repeated until we have a pixel to be classified, the softmax function is used to determine the probability that this pixel belong to a certain class.
 
-\subsection{U-net}
+\subsection{U-net}\label{tech:unet}
 
 U-net is a CNN architecture developed for the field of biological images where samples are scarce and the outputs involve assigning certain regions of the image to one or more classes. Previously, an sliding window was the standard method to perform this task, but the method is computationally expensive and requires an enormous amount of time depending on the image dimensions \cite{Ronneberger2015}. Therefore, in 2015 Prof. Dr. Olaf Ronneberger from the University of Freiburg in Germany developed an architecture consisting first of a contracting or encoding path that uses a combination of convolutional and pooling operations in order to aggregate and classify pixels. Once the pixel has been recognized the architecture proposes a second expansive path using up-sampling operations where the classified pixels are concatenated with features from the contracting or decoding path to add localization information. 
 
@@ -262,8 +280,25 @@ The architecture is faster and less expensive than sliding windows since pixel f
 
 \section{Previous Work}\label{s:prevWork}
 \subsection{Computer vision methods for detection of early choroidal thickness changes in myopic Asian school children}
+
+Computer vision methods for the automated segmentation of inner retinal and choroidal layers obtained from optical coherence tomography (OCT) imaging \cite{Ronchetti2019statistic} can be used to generate a reliable set of annotated scans. 
+The contribution of this project lies in the documentation and explanation of the most frequent methods used for measuring retinal thickness from an algorithmic perspective to provide a framework to easily extract features from OCT B-scans. 
+There are several approaches for detecting retinal boundaries in OCT B-scans, among them we can cite pixel intensity variations, texture analysis and graph search-based segmentation techniques. Pixel intensity variations are often used when calculating the total retinal thickness \cite{Alonso-Caneiro2013}, the method involves a series of computer graphic processing steps where each pixel of the image is compared to a threshold chosen according to the color intensity of the pixels that contain the information about the location of the boundary \cite{Fabritius:09}. 
+\\
+In the case of the ILM, it can be easily extracted because the lens pixels in the OCT scans are mostly black while the membrane's pixels are mostly white, this is mainly due to the density of the element, the more dense the element is, the whiter it will appear in the image \cite{Brar597}. Therefore, taking the image from the top left corner, one can run a search algorithm that finds the first white pixel \footnote{The first pixel that is over the threshold} from top to bottom and return its position. Running this same algorithm across the $x$ axis produces us an array of pixels that can be smoothed by using cubic-spline interpolations that corresponds to the ILM. The process for extracting the BM inner-most layer is the same, since the sclera presents opaque pixels that can be omitted by the algorithm, the process would start from the bottom left corner and runs the algorithm from bottom to top searching white pixels until it reaches the BM. The CSI is ignored in this works since the choroid’s boundary with the sclera is way too hard to identify using pixel intensity variation. 
+The retinal thickness was also computed to output an average thickness and an average thickness in 5 zones, producing the following image:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{./images/ILM_BM_Extracted.png}
+    \caption{Final rendering of the ILM, BM and retina thinckness}
+    \label{fig:final_rendering}
+\end{figure}
+
+During this study, it has been confirmed that OCT scan quality can greatly impact the result of an automated solution and potentially break the smoothing algorithm in the post-processing phase. When the scan had too much artefact it was almost impossible for the algorithm to correctly identify the ILM or the BM. Using this method only might result in a solution that cannot be fully automated, thus other methods like graph-based search must be explored. In this case, adjusting the natural smoothing spline parameter can improve the accuracy of the detected boundaries, but only in certain cases which fully depend on the OCT scans. To automate the process of generating annotations for a machine learning model, either a manual approach or a semi-automated solution might produce better results that are more accurate to the actual membrane's position.  
+
 \subsection{Literature Review}
-There has been efforts to automate OCT scan segmentation using deep learning methods, although one of its principal limitations is described in Ronchetti et al. \cite{Ronchetti2019} and Alonso-Caneiro et al. \cite{Alonso-Caneiro2013} as a low degree of interannotator agreement when detecting the CSI, which would introduce significant differences in the class segmentation and consequently would lead to inconsistencies in choroidal and retinal thickness measurements. Moreover, it has been shown in \cite{Maloca2021} that the performance of deep learning methods is at it's best an average of the experts' annotations.
+There have been efforts to automate OCT scan segmentation using deep learning methods, although one of its principal limitations is described in Ronchetti et al. \cite{Ronchetti2019} and Alonso-Caneiro et al. \cite{Alonso-Caneiro2013} as a low degree of interannotator agreement when detecting the CSI, which would introduce significant differences in the class segmentation and consequently would lead to inconsistencies in choroidal and retinal thickness measurements. Moreover, it has been shown in \cite{Maloca2021} that the performance of deep learning methods is at it's best an average of the experts' annotations.
 
 In 2017, Roy et al. \cite{Roy2017} proposed a fully convolutional deep learning architecture to segment retinal layers and fluid masses in OCT scans called ReLayNet. The architecture is used to train a joint loss function composed by  a weighted logistic regression and a Dice overlap. It proposes a similar encoder-decoder architecture using convolutional and pooling operations and additionally adding a softmax operation block for classifying pixels.
 
@@ -305,7 +340,7 @@ Zheng et al. \cite{Zheng2020} proposed using a modified U-net architecture for a
     \caption{Residual U-net model proposed by \cite{He2015} and used in \cite{Zheng2020}}
 \end{figure}
 
-The model was applied to a dataset composed by 450 OCT B-scans that were augmented to 1436 scans of 2048*1561 pixels. The performance was measured using the intraclass correlation coeficient (ICC) which is described as the level of resemblance between two or more samples of the belong to a common group defined by a particular set of characteristics. In Zheng's paper the groups were conformed by choroidal boundaries Bruch's Membrane and Choroidal Scleral Interface and a set of vasculature measurements such as the choroidal vascularity index (CVI), choroidal stromal index (CSI), luminal area (LA) ,stromal area (SA), the total choroidal area (TCA),and CT.
+The model was applied to a dataset composed by 450 OCT B-scans that were augmented to 1436 scans of 2048*1561 pixels. The performance was measured using the intraclass correlation coefficient (ICC) which is described as the level of resemblance between two or more samples of the belong to a common group defined by a particular set of characteristics. In Zheng's paper the groups were conformed by choroidal boundaries Bruch's Membrane and Choroidal Scleral Interface and a set of vasculature measurements such as the choroidal vascularity index (CVI), choroidal stromal index (CSI), luminal area (LA) ,stromal area (SA), the total choroidal area (TCA),and CT.
 
 \begin{figure}[H]
     \centering
@@ -320,16 +355,206 @@ The model was applied to a dataset composed by 450 OCT B-scans that were augment
 \section{Discussion}\label{s:Discussion}
 
 In this section we will detail the process of creating the framework from its inception point to evaluating the final output. In order to standardize its description we have chosen to fit our process to the Machine Learning workflow. 
-\subsection{Data Collection}
+\subsection{Data Collection //TODO}
 
 Ronchetti could maybe explain us better what's the data collection process and the annotation process. We can say where the ophtalmologist come from, how many do we have. What is the collaboration with the hospital in hong kong, etc. OOOOR we can transfer the Data section in the introduction here.
+\subsubsection{Mask Segmentation}
+Using the set of annotated scans we ran an algorithm to combine the three separate layers into a single image as depicted in Fig. \ref{fig:merged-layers}
+
+\begin{figure}[H]
+    \label{fig:merged-layers}
+    \centering
+    \includegraphics[width=1\textwidth]{./images/ILM_BM_CSI_merged.png}
+    \caption{Merged ILM, BM, CSI Layers.}
+\end{figure}
+
+Finally we assigned a particular value to each pixel in the 4 respective compartments obtaining a segmentation map where we can clearly devise the vitreous, retina, choroid and sclera.
+
+\begin{figure}[H]
+    \label{fig:merged-layers}
+    \centering
+    \includegraphics[width=0.7\textwidth]{./images/chun_w00_fix_14_segmented_annotated.png}
+    \caption{Segmentation Map used for training (Maybe we can put the names of the layers in each one of the compartments)}
+\end{figure}
 
 \subsection{Data Preparation}\label{ss:datapreparation}
+First we define a size for the images we will feed to our model, here we chose the size 256x256 since it is the default size of images used in Keras \cite{chollet2015keras}. Also we could not work with images that have a high resolution because it would cause memory overflow while the training of the model.
+\begin{lstlisting}
+for directory_path in glob.glob("data/images/A"):
+    for img_path in sorted(glob.glob(os.path.join(directory_path, "*.tif"))):
+        img = cv2.imread(img_path, 0)  # Read image as gray scale  
+        zeros = np.zeros([config.IMAGES['IMG_SIZE_X']-config.IMAGES['IMG_SIZE_Y'], config.IMAGES['IMG_SIZE_X']]) 
+        img = np.concatenate((zeros, img)) # Squaring the 500*768image to 768*768
+        img = cv2.resize(img, (SIZE_Y, SIZE_X))
+        train_images.append(img)
+       
+#Convert list to array for machine learning processing        
+train_images = np.array(train_images)
+\end{lstlisting}
 
-\subsubsection{Mask Segmentation}
+We use LabelEncoder \cite{scikit-learn} to encode our label with a value between 0 and n-classes-1, where n is the number of distinct label, here we have four: the vitreous, retina, choroid and sclera. This will allow us to add weight to each of our class and help to reduce class in-balance in our model. For instance the vitreous is very easy to identify for our model, we therefore want it to spend less time on it that the choroid or the retina. To do so the class 0 (vitreous) has a weight of 0.2 and the retina 10, meaning that the model will spend 5 times more time on the class 1 compared to the 0 and so on.
+
+\begin{lstlisting}
+from sklearn.preprocessing import LabelEncoder
+
+labelencoder = LabelEncoder()
+n, h, w = train_masks.shape
+train_masks_reshaped = train_masks.reshape(-1,1)
+train_masks_reshaped_encoded = labelencoder.fit_transform(train_masks_reshaped)
+train_masks_encoded_original_shape = train_masks_reshaped_encoded.reshape(n, h, w)
+
+np.unique(train_masks_encoded_original_shape)
+
+from sklearn.utils import class_weight
+
+class_weights = {0:0.2, 1:10, 2:20., 3:10.}
+class_weights = class_weight.compute_class_weight(class_weights, np.unique(train_masks_reshaped_encoded),train_masks_reshaped_encoded)
+\end{lstlisting}
+
+The normalization of a vector in mathematics means dividing by a norm of the vector \cite{Normalization_Vector_Machines:2001}, the idea is to make the Euclidean length of the vector equal to one. In neural network normalization is important to obtain good results and reduce the calculation time \cite{Normalizazion_NN}, and usually means re-scaling by the minimum and range of the vector, to make all the elements lie between 0 and 1. Normalisation is not a requirement for multi-layer perceptron but we chose to do it because our activation function, softmax (see sec. \ref{tech:softmax}), has a range of [0,1] and we therefore want to ensure that our target values lie within that range.
+
+\begin{lstlisting}
+#Normalize Data
+train_images = np.expand_dims(train_images, axis=3)
+train_images = normalize(train_images, axis=1)
+
+train_masks_input = np.expand_dims(train_masks, axis=3)
+\end{lstlisting}
+
+We can now split our data-set in two parts, one for the training and one for testing. We do this as a means of estimating classification accuracy \cite{DatasetSplitting:2011}. We chose to split that data-set in a 80\%-20\% \footnote{80\% of the images for the training set and the remaining for the testing set} proportion, as we don't have a lot of data we wanted to keep most of it for the training of the model.
+\begin{lstlisting}
+#Picking 20% for testing and remaining for training
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(train_images, train_masks_input, test_size = 0.20, random_state = 0) 
+\end{lstlisting}
+
+Then we need to encode our label from categorical features to their numeric representation, as it is required for neural network. We use to\_categorical from Keras \cite{chollet2015keras} to convert our current class vector to its binary matrix representation.
+
+\begin{lstlisting}
+from keras.utils import to_categorical
+train_masks_cat = to_categorical(y_train, num_classes=n_classes)
+y_train_cat = train_masks_cat.reshape((y_train.shape[0], y_train.shape[1], y_train.shape[2], n_classes))
+\end{lstlisting}
+
+Usually deep learning requires a large volume of data to have good performances, but as we saw in sec. \ref{Methodology:data} we only have 755 OCT B-scans. We already use U-net (sec. \ref{tech:unet}) to overcome this problem because it was develop specifically for small dataset usage, one top of that data augmentation can be added to artificially increase the number of data we feed to the model. Data augmentation is a widely adopted approach for increasing the amount of training data \cite{AugAndEval:2017} but the quality of the augmented data may not always be precise as too harsh modifications can lead to significant loss in the data. This is even more true in our case because the OCT B-scans are extremely precise (nanometer)(see sec. \ref{Methodology:data}), we therefore want to be cautious when choosing the augmentation parameters.
+We chose a rotation of maximum 5 degrees because after some testing we realized that more rotation would lead to too much loss on the borders of the images and as the scan are usually similarly in the spatial positioning of the layers it would mislead the model. The "reflect" fill-mode to obtain a more organic result to replace missing part of the images. We use an elastic function to compute the distortion, the function creates random displacement fields for height and width and smoothing the fields with a Gaussian. 
+\begin{lstlisting}
+train_datagen= ImageDataGenerator(rotation_range=5,
+    fill_mode="reflect",
+    shear_range=5,
+    preprocessing_function=lambda x: elastic_transform(x, alpha_range=10, sigma=5)
+)
+\end{lstlisting}
+
+We use data generator to real-time data feed our Keras model with augmented data. Using data generator also means that if the dataset we use is to grow in the future we avoid the problem of having dataset that are memory consuming to load.
 \subsection{Model Development}
+
+We based our model on the U-net architecture due to it's flexibility to adapt to different kind of images. We used a combination of an implementation made by Dr. Ronchetti \cite{Ronchetti2019} and the youtuber DigitalSreeni \cite{DigitalSreeni}.
+
+According to the original U-net model, the contracting path is a combination of convolution and pooling operations as illustrated can be demonstrated in Fig. \ref{fig:model}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./images/U-net_ThesisVersion.png}
+    \caption{Model implementation based on U-net // TODO legend and Dropout signaling}
+    \label{fig:model}
+\end{figure}
+
+Our first convolutional layer has 64 filters as described in Lst. \ref{lst:conv2D-1}, we use a 3x3 kernel initialized by the keras initializer "he\_normal" which draws samples from a truncated normal distribution centered on 0 with $stddev = sqrt(2 / fan\_in)$ where fan\_in is the number of input units in the weight tensor. The layer uses the same padding to avoid the loss of data and the activation function is the Rectified Linear Unit (relu) which fires the neuron for every positive value resulting from the convolution. 
+
+It's important to mention that in order to avoid overfitting we dropout 10\% of the output data that runs through the network and finally we apply a pooling operation with a 2*2 kernel size in order to propagate to the next neuronal layers the pixels with the most important features.
+
+\begin{lstlisting}[caption={Implementation of the first level of the contracting path}, label={lst:conv2D-1}]
+inputs = Input((img_rows=256, img_cols=256,1))
+
+c1 = Conv2D(filters=64, kernel_size=(3, 3), activation='relu', kernel_initializer='he_normal', padding='same')(inputs)
+c1 = Dropout(0.1)(c1)
+c1 = Conv2D(filters=64, kernel_size= (3, 3), activation='relu', kernel_initializer='he_normal', padding='same')(c1)
+p1 = MaxPooling2D((2, 2))(c1)
+\end{lstlisting}
+
+The decoder part of the model is presented in Lst. \ref{lst:conv2D-9} and involves the implementation of a transposed convolution (also called deconvolution) which is the inverse operation of convolutions and instead of contracting the image it expands it. The output is then concatenated with the layers of the contracting path as described on Fig. \ref{fig:model} in order to add localization information \footnote{Refer to Sec. \ref{s:TechBack} for detailed explanations}.
+
+
+Finally, the output is reduced to an image with 4 channels (one channel or class per each compartment in the OCT scan) and a softmax activation function determines the probability that the pixel belongs to each one of these classes and place the pixel in the correct channel.
+
+\begin{lstlisting} [caption={Implementation of the last level of the upsampling path}, label={lst:conv2D-9}]
+u9 = Conv2DTranspose(64, kernel_size=(2, 2), strides=(2, 2), padding='same')(c8)
+u9 = concatenate([u9, c1], axis=3)
+c9 = Conv2D(64, kernel_size=(3, 3), activation='relu', kernel_initializer='he_normal', padding='same')(u9)
+c9 = Dropout(0.1)(c9)
+c9 = Conv2D(64, kernel_size=(3, 3), activation='relu', kernel_initializer='he_normal', padding='same')(c9)
+ 
+outputs = Conv2D(4, (1, 1), activation='softmax')(c9)
+\end{lstlisting}
 \subsection{Model Training}
+
+In order to train the model, we implemented the fit method by providing the parameters shown in Lst. \ref{lst:fit-method}. Since we are using image augmentation and keras generator generates an unlimited number of images from our dataset we decided to show the algorithm only 100 images per epoch. Therefore, having 1000 epochs would mean that the model sees 100000 images generated from a the training set containing 604 images. Certain authors \cite{Shorten2019, mikolajcyk2018} would argue that providing the model with such a large quantity of generated images would bias our results towards our own data distribution and the model would not be able to generalize further. However, since our dataset stems from a very defined population we believe that by design the results of the model would already be biased towards the anatomic features of Asian eyes. Nevertheless, we implemented a cross validation method using 20\% of the original dataset whose results indicate that our training is not overfitting the data\footnote{See Sec. \ref{Results}}. Therefore, we do not believe that our model's ability to generalize the dataset is influenced by the length of the training or the number of images generated but the results are clearly biased towards a the Asian population and would be probably more successful for that kind of samples. The bias problem could only be solved by adding data from different populations so the model learns the characteristics of the human eye from all kinds of different humans. 
+
+\begin{lstlisting}[caption={Model training parameters}, label={lst:fit-method}]
+history = model.fit(train_generator,
+                    steps_per_epoch = 100,
+                    verbose=1, 
+                    epochs=1000, 
+                    validation_data=(x_test, y_test_cat),
+                    shuffle=True,
+                    callbacks= [
+                                ModelCheckpoint(monitor='val_loss',
+                                filepath='weights/RMSProp_BCE_1e-4_best_weights.hdf5',
+                                save_best_only=True,
+                                save_weights_only=True),
+                        ReduceLROnPlateau(monitor='val_loss',
+                                          factor=0.1,
+                                          patience=100,
+                                          verbose=1),
+                        TensorBoard(log_dir='./logs/syntethic_'+id ()),
+                        CSVLogger('models/history'+id()+'.csv')]
+                   )
+\end{lstlisting}
+
+The goal of every deep learning algorithm is to minimize the loss of the gradient descent, the learning rate dictates by how much the loss can be reduced in order to find a balance between the maximum accuracy of the learning process and the time invested to it. \cite{Zhang2021} It is a standard practice to find the learning rate by performing empiric experiments on the dataset. In our case, we used an algorithm to find the optimal learning rate according to our dataset. The implementation is provided by the Keras Learning Rate Finder \cite{chollet2015keras} and works by training the model against different learning rates and plotting the result of the loss against the learning rates. The rate where the slope of the curve generated is first negative and second more steep is the most efficient learning rate. 
+
+\begin{lstlisting}[caption={Learning Rate Finder}, label={lst:learning-rate-finder}]
+lr_finder = LRFinder(model)
+lr_finder.find(X1, y_train_cat, start_lr=1e-17, end_lr=1, batch_size=32, epochs=10)
+\end{lstlisting}
+
+Given the model and the data selected, the algorithm finds that the most efficient learning rates are between 1e-4 and 1e-5 as demonstrated in Fig \ref{fig:lr_plot}. In consequence we have decided to use a learning rate of 1e-4 for our training, taking care of cross-validating the results with different learning rates and Keras callback ReduceLROnPlateau \cite{chollet2015keras} which reduces the learning rate automatically when it has not improved the loss during a given number of epochs.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./images/learning_rate_plot.png}
+    \caption{Learning rate plot using Keras LRFinder}
+    \label{fig:lr_plot}
+\end{figure}
+
 \subsection{Model Evaluation}
+In order to evaluate the model we use different measures including Jaccard coefficient also called Intersection over Union (IoU). This measure is typically used to evaluate the similarity between two arbitrary shapes and is invariant to the scale of the problem considered because it encodes the shape properties of the objects being compared in the region property before computing a normalized measure that focuses on their surfaces \cite{IoU:2019}. The Jaccard coefficient can be described as follows \cite{Niwattanakul2013}:
+
+\begin{equation}
+    J(A,B) = \frac{|A\cap B|}{|A\cup B|}
+\end{equation}
+
+Jaccard's similarity coefficient between the two datasets A and B is the result of dividing between the number of common features of A and B, divided by the number of properties as shown above \cite{Niwattanakul2013}. 
+This measure allows us to compare the similarity between our model prediction and the ground truth by returning the percentage of correctly classified pixels. 
+This is also one of the reasons why the accuracy measure is not used as an indicator of how well the model works. Accuracy is measured by the number of correct predictions out of the total number of predictions, but when we have for example 97\% accuracy, it means that 3\% of the pixels are not well classified, with a 500x768 image this gives us 11'250 pixels that will be misclassified. The reason why we don't use the "accuracy" measure is because it loses precision as there is no separation between classes and it doesn't offer any information about the correct prediction portion of the image but rather on the overall set of predictions divided by the total of the possibilities. 
+
+A confusion matrix allows to evaluate the model performance in a simple way to compare the predicted values with the ground-truth and can be represented like this \cite{ConfusionMatrix}:
+//TODO placement table
+    \begin{table}[]
+        \begin{tabular}{lll}
+        \cline{2-3}
+            \multicolumn{1}{l|}{}                                 & \multicolumn{1}{l|}{\textbf{Predicted Negative}} & \multicolumn{1}{l|}{\textbf{Predicted positive}} \\ \hline
+            \multicolumn{1}{|l|}{\textbf{Ground-truth Negative}} & \multicolumn{1}{l|}{True negative (TN)}          & \multicolumn{1}{l|}{False Positive (FP)}         \\ \hline
+            \multicolumn{1}{|l|}{\textbf{Ground-truth Positive}}  & \multicolumn{1}{l|}{False Negative (FN)}         & \multicolumn{1}{l|}{True Positive (TP)}          \\ \hline
+                                                                  &                                                  &                                                 
+        \end{tabular}
+    \end{table}
+\\With this confusion matrix we can then compute two metrics that we use for our model evaluation: sensitivity and specificity. 
+The sensitivity can be described, in our case, as the proportion of  classified pixels in a class among those that truly belong in this class or in other word the number of true positive over the sum of the true positive and false negative. 
+The specificity is measuring the ability to correctly reject the pixels that do not belong in a class, or in other word the number of true negatives divided by the sum of the true negatives and false positives. Sensitivity measures  the proportion of actual positive cases that were correctly predicted, while specificity measure is used to determine the proportion of actual negative cases that were correctly predicted. This can help us to determine if our model is efficient in a general way (not per each class).
+
 
 \section{Results}\label{Results}
 
