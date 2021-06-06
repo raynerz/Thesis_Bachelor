@@ -344,7 +344,7 @@ Maloca et al. \cite{Maloca2019} validated the usage of deep learning methods by 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./images/maloca-unet.png}
-    \caption{Description of the U-net model used in \cite{Maloca2019}}
+    \caption{Depiction of the U-net model used in \cite{Maloca2019}}
 \end{figure}
 
 The metric used to measure the performance of the U-net model in \cite{Maloca2019} was the Intersection over Union (IoC) also known as Jaccard coefficient, where all the matching pixels between both images are divided between the total of pixels of both images, giving a clear measure of similarity between both images. The results indicate mean IoU scores of 0.9929 for vitreous, 0.9690 for retina, 0.8819 for choroid and 0.9768 for sclera when benchmarked to a validation dataset of 60 images. From these results the authors concluded that the outputs of the proposed CNN were on par with manual segmentations made by human experts.
@@ -380,8 +380,11 @@ The model was applied to a dataset composed by 450 OCT B-scans that were augment
 In this section we will detail the process of creating the framework from its inception point to evaluating the final output. In order to standardize its description we have chosen to fit our process to the Machine Learning workflow. 
 
 \subsection{Data Collection}
-For this project we used a dataset composed of 755 OCT B-scans\footnote{See Sec. \ref{s:TechBack} for more information.} of 500*768 pixels. The data was obtained from asian patients in the age range of 8-18 years stemming from urban regions with a high prevalence of myopia. The subject were healthy with globally good distance and near vision, no systemic and ocular diseases, ocular trauma or surgery\cite{Ronchetti2019}. The images were acquired by a dual-wavelength eye-tracking OCT system operating simultaneously at the 870 and 1075 nm bands. This system was developed by HuCE-opto-Lab at the Bern University of Applied Sciences in Biel, Switzerland \cite{Ronchetti2019}  before it was transferred and setup at the Hong Kong Polytechnic University’s School of Optometry\footnote{For more information about the OCT dataset we refer the interest reader to \cite{Ronchetti2019}}.
+For this project we used a dataset composed of 755 OCT B-scans\footnote{See Sec. \ref{s:TechBack} for more information.} of 500*768 pixels. The data was obtained from Asian patients in the age range of 8-18 years stemming from urban regions with a high prevalence of myopia. The subject were healthy with globally good distance and near vision, no systemic and ocular diseases, ocular trauma or surgery\cite{Ronchetti2019}. The images were acquired by a dual-wavelength eye-tracking OCT system operating simultaneously at the 870 and 1075 nm bands. This system was developed by HuCE-opto-Lab at the Bern University of Applied Sciences in Biel, Switzerland \cite{Ronchetti2019}  before it was transferred and setup at the Hong Kong Polytechnic University’s School of Optometry\footnote{For more information about the OCT dataset we refer the interest reader to \cite{Ronchetti2019}}.
 
+\subsubsection{Data Annotation}
+
+The scans were annotated by a group of 6 ophtalmologists recruited as experts. Using an online tool they were capable of drawing the ILM, BM and CSI boundaries on top of the OCT scans. The scans were randomly distributed among the experts such that each expert got 50 volume stack pairs containing each 8 B-scans pairs. The experts segmented the three boundaries drawing 2400 lines which took approximately 6 h per expert at a rate of 9 sec per line \cite{Ronchetti2019}.
 
 \subsubsection{Mask Segmentation}
 Using the set of annotated scans we ran an algorithm to combine the three separate layers into a single image as depicted in Fig. \ref{fig:merged}
@@ -393,12 +396,12 @@ Using the set of annotated scans we ran an algorithm to combine the three separa
     \label{fig:merged}
 \end{figure}
 
-Finally we assigned a particular value to each pixel in the 4 respective compartments obtaining a segmentation map where we can clearly devise the vitreous, retina, choroid and sclera.
+Finally we assigned a particular value to each pixel in the 4 respective compartments obtaining a segmentation map where we can clearly devise the vitreous, retina, choroid and sclera. Since not all the scans could be processed by our algorithm due to artifacts in the data acquisition and a different number of annotated samples for each one of the layers, the dataset was reduced to a total of 755 fully segmented B-scans.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{./images/chun_w00_fix_14_segmented_annotated.png}
-    \caption{Segmentation Map used for training. \emph{Note that everything in red is not part of the segmentation mask but has been added for clarity in this image}}
+    \caption{Segmentation Map used for training. \emph{Note that red elements are not part of the segmentation mask but has been added for clarity in this image}}
     \label{fig:annotated-layers}
 \end{figure}
 
@@ -460,7 +463,7 @@ from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(train_images, train_masks_input, test_size = 0.20, random_state = 0) 
 \end{lstlisting}
 
-Then we need to encode our label from categorical features to their numeric representation, as it is required for neural network. We use \emph{to\_categorical} from Keras \cite{chollet2015keras} to convert our current class vector to its binary matrix representation.
+Then we need to encode our label from categorical features to their numeric representation, as it is required for neural networks. We use \emph{to\_categorical} from Keras \cite{chollet2015keras} to convert our current class vector to its binary matrix representation.
 
 \begin{lstlisting}[caption={Data conversion into categorical, code belongs in the \emph{train.py} file}, label={lst:data-categorical}]
 from keras.utils import to_categorical
@@ -489,14 +492,14 @@ According to the original U-net model, the contracting path is a combination of 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{./images/U-net_ThesisVersion.png}
-    \caption{Model implementation based on U-net // TODO legend and Dropout signaling}
+    \includegraphics[width=\textwidth]{./images/U-net_ThesisVersion.png}
+    \caption{Model implementation based on U-net}
     \label{fig:model}
 \end{figure}
 
-Our first convolutional layer has 64 filters as described in Lst. \ref{lst:conv2D-1}, we use a 3x3 kernel initialized by the keras initializer \emph{he\_normal} which draws samples from a truncated normal distribution centered on 0 with $stddev = sqrt(2 / fan\_in)$ where \emph{fan\_in} is the number of input units in the weight tensor. The layer uses the same padding to avoid the loss of data information and the activation function is the REctified Linear Unit (relu) which fires the neuron for every positive value resulting from the convolution. 
+Our first convolutional layer has 64 filters as described in Lst. \ref{lst:conv2D-1}, we use a 3x3 kernel initialized by the keras initializer \emph{he\_normal} which draws samples from a truncated normal distribution centered on 0 with $stddev = sqrt(2 / fan\_in)$ where \emph{fan\_in} is the number of input units in the weight tensor. The layer uses the same padding to avoid the loss of data information and the activation function is the Rectified Linear Unit (relu) which fires the neuron for every positive value resulting from the convolution. 
 
-It's important to mention that in order to avoid overfitting we drop out 10\% of the output data that runs through the network and finally we apply a pooling operation with a 2x2 kernel size in order to propagate the pixels with the most important features to the next neuronal layers.
+It's important to mention that in order to avoid overfitting we drop 10\% out of the output data that runs through the network and finally we apply a pooling operation with a 2x2 kernel size in order to propagate the pixels with the most important features to the next neuronal layers.
 
 \begin{lstlisting}[caption={Implementation of the first level of the contracting path, the rest of the layer can be found in the \emph{get\_unet()} method from \emph{model.py}}, label={lst:conv2D-1}]
 inputs = Input((img_rows=256, img_cols=256,1))
@@ -543,7 +546,7 @@ Given the model and the data selected, the algorithm finds that the most efficie
 \subsubsection{Model A with Data Augmentation}
 In order to see the influence that data augmentation has on our dataset, we decided to train two different models. Model A will implement data augmentation as exposed in Sec. \ref{ss:datapreparation} and Model B will implement the raw dataset.
 
-Model A fit method can be seen in Lst. \ref{lst:fit-method:A}. Since we are using image augmentation and keras generator generates an unlimited number of images from our dataset we decided to show the algorithm only 100 images per epoch. Therefore, having 1000 epochs would mean that the model sees 100000 images generated from a the training set containing 604 images. Certain authors \cite{Shorten2019, mikolajcyk2018} would argue that providing the model with such a large quantity of generated images would bias our results towards our own data distribution and the model would not be able to generalize further. However, since our dataset stems from a very defined population we believe that by design the results of the model would already be biased towards the anatomic features of Asian eyes. Nevertheless, we implemented a cross validation method using 20\% of the original dataset whose results indicate that our training is not overfitting the data\footnote{See Sec. \ref{Results}}. Therefore, we do not believe that our model's ability to generalize the dataset is influenced by the number of images generated but the results are clearly biased towards a the Asian population and would be probably more successful for that kind of samples. The bias problem could only be solved by adding data from different populations so the model learns the characteristics of the human eye from all kinds of different humans. 
+Model A fit method can be seen in Lst. \ref{lst:fit-method:A}. Since we are using image augmentation and keras generator generates an unlimited number of images from our dataset we decided to show the algorithm only 100 images per epoch. Therefore, having 400 epochs would mean that the model process 40'000 images generated from a the training set containing 604 images. Certain authors \cite{Shorten2019, mikolajcyk2018} would argue that providing the model with such a large quantity of generated images would bias our results towards our own data distribution and the model would not be able to generalize further. However, since our dataset stems from a very limited subset of the Asian population we believe that by design the results of the model would already be biased towards the anatomic features of Asian eyes. Nevertheless, we implemented a cross validation method using 20\% of the original dataset whose results indicate that our training is not overfitting the data\footnote{See Sec. \ref{Results}}. Therefore, we do not believe that our model's ability to generalize the dataset is influenced by the number of images generated but the results are clearly biased towards a the Asian population and would be probably more successful for that kind of samples. The bias problem could only be solved by adding data from different populations so the model learns the characteristics of the human eye from all kinds of different humans. 
 
 \begin{lstlisting}[caption={Model A training parameters, this is a code snippet from the  \emph{train\_model\_A} method in \emph{train.py}}, label={lst:fit-method:A}]
 history = model.fit(train_generator,
@@ -575,7 +578,7 @@ history = model.fit(train_generator,
 
 \subsubsection{Model B without Data Augmentation}
 
-Model B was implemented over the raw dataset with the idea of cross validate the results and check the influence of image augmentation on our results. In this case, as seen in Lst. \ref{lst:fit-method-B} the input data comes directly from the numpy arrays created when splitting and converting the data to categorical in Lst.\ref{lst:data-split} and \ref{lst:data-categorical} 
+Model B was implemented over the raw dataset with the idea of cross validate the results and check the influence of image augmentation in our results. In this case, as seen in Lst. \ref{lst:fit-method-B} the input data comes directly from the numpy arrays created when splitting and converting the data to categorical in Lst.\ref{lst:data-split} and \ref{lst:data-categorical} 
 
 \begin{lstlisting}[caption={Model B training parameters, this is a code snippet from the  \emph{train\_model\_B} method in \emph{train.py}},label={lst:fit-method-B}]
 history = model.fit(x_train, y_train_cat,
@@ -777,13 +780,15 @@ Analysing the results of Model A and Model B we conclude that there is a high in
 The influence of the inter and intra observer variability seen among experts when annotating data \cite{Maloca2019, Maloca2021, Ronchetti2019} may lead to 
 influence of operator bias in the outputs of the model \cite{Gabr2016}. The problem arises from the reliance of supervised machine learning in the ground truth to learn the features of in the training data. It is expected that our model is highly biased towards the selected experts' agreement on what features on OCT scans define the position of the different boundaries used to separate the layers. Unfortunately, this can have a great impact on the final results since the model can only perform as accurately as the ground truth provided. 
 
-All in all, from a machine learning perspective, the model is able to learn the features needed to accurately segment the OCT scans. However, it was noticed that artifacts introduced because of different conditions during the scanning process (brightness, eye position, band selection) can have a negative impact on the learning process, therefore, we could expect that raising the quality of the scans will lead to first a lower inter and intra observer variability and second a higher Jaccard coefficient which results on a more accurate model.
+From a medical perspective having an automated system that segments the 4 compartments present in an OCT scan means saving time invested in manually segmenting each B-scan. These time could be dedicated to enhance the care of the patient. However, since an operator bias is present in the outputs of the models, ML engineers need to ensure that training is performed using data following high standards of quality regarding the accuracy of the segmentations.
+
+All in all, our framework is able to learn the features needed to accurately segment the OCT scans. However, it was noticed that artifacts introduced because of different conditions during the scanning process (brightness, eye position, band selection) can have a negative impact on the learning process, therefore, we could expect that raising the quality of the scans will lead to first a lower inter and intra observer variability and second a higher Jaccard coefficient which results on more accurate outputs.
 
 
 
 \section{Future Work}
 
-Further research into the topic would include dedicating significant resources to create a more representative dataset which would include OCT scans from different populations in order for the model to learn anatomical differences across different ethnic groups \cite{Consejo2020, Lin2009}. On the other hand, methods for accurately detecting the real position of every layer need to be implemented in order to avoid as much as possible the operator bias and interobserver variability. A suggested methodology might be to perform OCT scans on postmortem human eyes, manually annotate the segmentations from a posterior forensic analysis using eye dissections \cite{IOVINO2017, Mcnabb2009, Nioi2019} and match both data sources. Taking this approach would avoid the errors created by  (EXPLAIN WHY, EXPLAIN THAT WE WOULD AVOID THE ERRORS PRODUCED BECAUSE OF THE ARTIFACTS).   
+Further research into the topic would include dedicating significant resources to create a more representative dataset which would include OCT scans from different populations in order for the model to learn anatomical differences across different ethnic groups \cite{Consejo2020, Lin2009}. On the other hand, methods for accurately detecting the real position of every layer need to be implemented in order to avoid as much as possible the operator bias and interobserver variability. A suggested methodology might be to perform OCT scans on postmortem human eyes, manually annotate the segmentations from both the B-Scans and a posterior forensic analysis using a corresponding histopathology \cite{IOVINO2017, Mcnabb2009, Nioi2019} and correlate the data sources. Adding samples using this approach to our current dataset could improve the model learning process by avoiding the errors created by the presence of optical artifacts in the OCT scans resulting in more accurate ground truth. It would be expected that by having a clearer image, the inter and intra expert variability is minimal. This would help the model to identify features on boundaries that were missed in the current project as a result of the operator bias.
 
 In order to improve the model outputs' Jaccard's coefficient, other ML models shall be implemented. Particularly implementing residual functions (Resnet model) might be beneficial for the overall performance as referred in \cite{He2015, Zheng2020}. The implementation could as well benefit from applying statistical rigourosity with techniques like variance analysis and p-tests and intragrader or intramodel comparisons. 
 
@@ -801,7 +806,9 @@ Finally, stacking up a series of automatically segmented B-scans to obtain a C-s
 
 
 \newpage
-\thispagestyle{empty}
+\section{Appendix}
+\newpage
+
 \markboth{}{}
   \normalsize
 \begin{center}
@@ -812,10 +819,9 @@ We confirm that the above work has been produced by the authors without any unau
 Bienne, the \today
 
 \newpage
-\blinddocument
+
 \appendix
-\chapter{Project architecture}
 \includepdf[pages={1}]{./doc/appendix/projectArchitecture.pdf}
-\blinddocument
+
 
 \end{document}
