@@ -29,23 +29,6 @@
 
 \usepackage{hyperref}
 
-\TOCclone[List of Appendices]{toc}{atoc}
-\addtocontents{atoc}{\protect\value{tocdepth}=-1}
-\newcommand\listofappendices{\listofatoc}
-
-\newcommand*\savedtocdepth{}
-\AtBeginDocument{%
-  \edef\savedtocdepth{\the\value{tocdepth}}%
-}
-
-\let\originalappendix\appendix
-\renewcommand\appendix{%
-  \originalappendix
-  \cleardoublepage
-  \addcontentsline{toc}{chapter}{\appendixname}%
-  \addtocontents{toc}{\protect\value{tocdepth}=-1}%
-  \addtocontents{atoc}{\protect\value{tocdepth}=\savedtocdepth}%
-}
 
 %Code
 \usepackage{xcolor}
@@ -116,10 +99,10 @@ As machine learning becomes ubiquitous in the software engineering world, more a
 
 \begin{tabular}{ll}
 
-Submitted by: & Emeline Liebeherr\\
+Submitted by: & Emeline Lieberherr\\
 & Rayner Zorrilla Alfonzo\\
 Tutor:  & Prof. Dr. Tiziano Ronchetti\\
-Expert:  & Dr. Studer Harald\\
+Expert:  & Dr. Harald Studer\\
 Submission deadline: & Thursday, June 17th, 2021
 
 \end{tabular}
@@ -152,7 +135,7 @@ The aim of this project is to develop a deep learning model able to process  oph
 
 The contribution of this project lies in the setup and documentation of a software framework capable of generating ground truth images for ophthalmic image medical analysis where the vitreal, retinal, choroidal and scleral compartments are clearly defined. The mentioned framework includes image pre-processing, model implementation and results evaluation. 
 
-From a medical perspective, the final output offers health care providers and other experts an image where the major layers present in a regular OCT scan are pre-segmented with a high degree of confidence, which can form the basis of different analysis involving choroidal and retinal thickness. 
+From a medical perspective, the final output could offer health care providers and other experts an image where the major layers present in a regular OCT scan are pre-segmented with a high degree of confidence, which can form the basis of different analysis involving choroidal and retinal thickness. 
 
 \subsection{Material and Methods}
 
@@ -803,10 +786,6 @@ Finally, stacking up a series of automatically segmented B-scans to obtain a C-s
 \bibliography{bibli} % Entries are in the "bibi.bib" file
 
 
-
-
-\newpage
-\section{Appendix}
 \newpage
 
 \markboth{}{}
@@ -819,9 +798,15 @@ We confirm that the above work has been produced by the authors without any unau
 Bienne, the \today
 
 \newpage
-
 \appendix
-\includepdf[pages={1}]{./doc/appendix/projectArchitecture.pdf}
+\section*{Appendices}
+\addcontentsline{toc}{section}{Appendices}
+\renewcommand{\thesubsection}{\Alph{subsection}}
 
+\subsection{Project architecture diagram}
+
+\includepdf[pages={1}]{./doc/appendix/projectArchitecture.pdf}
+\subsection{Planning of work and tasks for the project}
+\includepdf[pages={1}]{./doc/appendix/plannification.pdf}
 
 \end{document}
