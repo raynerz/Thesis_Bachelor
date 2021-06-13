@@ -2,7 +2,8 @@
 \usepackage[english]{babel} %Für die indirekte Angabe von Umlauten. Es müssen dann Umlaute wie folgt im Code angegeben werden: "a "o "u "s.
 
 \usepackage[utf8]{inputenc}
-%Math
+%Math/Physics
+\usepackage{siunitx}
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage{braket}
 \newcommand{\tens}[1]{% https://tex.stackexchange.com/questions/171788/always-have-the-ring-of-the-tensor-product-below-the-otimes -> Tensor Product
@@ -90,7 +91,7 @@ Generation of Synthetic Ground Truth for Ophthalmic Medical Image Analysis}\\
 
 
 \begin{abstract}
-As machine learning becomes ubiquitous in the software engineering world, more and more projects are dedicated to implement the technology in the life sciences field. In this report we propose a framework that process ophthalmic OCT images and predicts synthetic vitreal, retinal, choroidal and scleral semantic segmentations based on a combination of image augmentation techniques and a convolutional neural network presenting an encoder-decoder structure. After validation with annotations made by human expert ophthalmologists the results indicate that our framework can automatically segment a regular OCT scan with a mean Jaccard coefficient  of 96.78\% when using image augmentation and 98.01\% without augmentation. In addition, we present a detailed workflow involving the utilisation of state-of-the-art machine learning techniques with comprehensive explanations on the data preparation, model implementation and evaluation criteria.  
+As machine learning becomes ubiquitous in software engineering world, more and more projects are dedicated to implement this technology in the life sciences field. In this report, we present a framework that process ophthalmic OCT images and predicts synthetic vitreal, retinal, choroidal and scleral semantic segmentations. In this context, we combine image augmentation techniques and a convolutional neural network presenting an encoder-decoder structure. Validation was done by comparing our results with those obtained by manual expert segmentation. This evaluation showed, that our framework can automatically segment a regular OCT scan with a mean Jaccard coefficient  of 96.78\% when using image augmentation and 98.01\% without augmentation. In addition, we present a detailed workflow involving the utilisation of state-of-the-art machine learning techniques with comprehensive explanations on the data preparation, model implementation and evaluation criteria.  
 \end{abstract}
 
 \vspace{2cm}
@@ -101,8 +102,8 @@ As machine learning becomes ubiquitous in the software engineering world, more a
 
 Submitted by: & Emeline Lieberherr\\
 & Rayner Zorrilla Alfonzo\\
-Tutor:  & Prof. Dr. Tiziano Ronchetti\\
-Expert:  & Dr. Harald Studer\\
+Supervisor:  & Prof.~Dr.~Tiziano Ronchetti\\
+Expert:  & Dr.~Harald Studer\\
 Submission deadline: & Thursday, June 17th, 2021
 
 \end{tabular}
@@ -119,29 +120,29 @@ Submission deadline: & Thursday, June 17th, 2021
 
 \section{Introduction}\label{s:introduction} 
 \subsection{Motivation}\label{ss:motivation}
-The choroid is the vascular layer of the eye. It contains connective tissues and is located between the sclera on the outside and the retina on the inside. The choroid is responsible for the irrigation and circulation of the ocular metabolism in order to supply the outer retina with oxygen and metabolites\cite{choroidExpl}.
+The choroid is the vascular layer of the eye. It contains connective tissues and is located between the sclera on the outside and the retina on the inside. The choroid is responsible for the irrigation and circulation of the ocular metabolism in order to supply the outer retina with oxygen and metabolites \cite{choroidExpl}.
 
-Its thickness can depend on several factors, including age, blood pressure, anatomic pathologies, etc. It has been found that the thickness of the choroid decreases with age, however several recent research studies on choroidal development during childhood and adolescence contradict this finding. In particular, subfoveal choroidal thickness has been found to be negatively correlated in Asian children, where the prevalence of myopia is higher\cite{Ronchetti2019}. Longitudinal studies of adolescents have shown that the eyeball lengthens during the development of myopia \cite{Ronchetti2018}. In the case of severe myopia this process is associated with a significant thinning of the choroidal thickness. Therefore the choroidal structure and thickness are strongly considered for monitoring the progression of myopia\cite{Ronchetti2019}.
+Its thickness depends on several factors, including age, blood pressure, anatomic pathologies. While in adults it has been found that the thickness of the choroid decreases with age, the same has not yet been demonstrated in children and adolescents. In particular, subfoveal choroidal thickness has been found to be negatively correlated in Asian children, where the prevalence of myopia is higher \cite{Ronchetti2019}. Longitudinal studies of adolescents have shown that the eyeball lengthens during the development of myopia \cite{Ronchetti2018}. In the case of severe myopia this process is associated with a significant thinning of the choroidal thickness. Therefore the choroidal structure and thickness play a crucial role in monitoring the progression of myopia \cite{Ronchetti2019}.
 
 The main challenge in detecting disease progression is to detect even small changes as early as possible. Optical coherence tomography (OCT) imaging allows the capture of highly resolved details of the retina and choroid to detect minute changes in the structure of both membranes\cite{Ronchetti2019}.
 
-In order to measure these changes in choroidal thickness it is necessary to detect all the different layers present in the ocular globe's peripheria and their interfaces from OCT scans. With such segmentation one can compare results over several years. 
-However, a manual approach raises two important problems: firstly, the number of scans to be processed (layer identification) is considerable \cite{Maloca2019}. Secondly, the low contrast, loss of signal, and the presence of other image degradations mentioned in Sec.\ref{ss:motivation} the choroid makes it difficult to distinguish the sclera from that of the choroidal border \cite{Ronchetti2019}.
+In order to measure changes in the choroidal thickness, it is necessary to detect all the different layers present in the ocular globe\textquotesingle s periphery and their interfaces with the help of OCT scans. With the help of the segmentation of follow-up images it is possible to compare results over several years. 
+However, a manual approach raises two important problems: firstly, the number of scans to be processed (layer identification) is considerable \cite{Maloca2019}. Secondly, the low contrast, loss of signal, and the presence of other image degradations mentioned in Sec.~\ref{ss:motivation} the choroid makes it difficult to distinguish the sclera from the choroidal border \cite{Ronchetti2019}.
 
 \subsection{Goal}
-The aim of this project is to develop a deep learning model able to process  ophthalmic  OCT  images  and to predict  synthetic  vitreal,  retinal,  choroidal  and  scleral  semantic  segmentations  based  on  a  combination  of  image  augmentation  techniques  and  a convolutional neural network presenting an encoder-decoder structure with a mean Jaccard coefficient of at least 95\%   \cite{Maloca2019}. This will automate the measurements made on the scans and considerably reduce the time needed to produce a result, thus reducing the workload of the experts and ensuring a certain accuracy and standardization in the detection of the choroid. 
+The aim of this project is to develop a deep learning model able to process ophthalmic OCT images and to predict  synthetic vitreal, retinal, choroidal and scleral semantic  segmentations based on a combination of image augmentation  techniques and a convolutional neural network presenting an encoder-decoder structure with a mean Jaccard coefficient of at least 95\%   \cite{Maloca2019}. This will automate the measurements made on the scans and considerably reduce the time needed to produce a result, thus reducing the workload of the experts and ensuring a high accuracy and standardization in the detection of the choroid. 
 
 \subsection{Contributions}
 
-The contribution of this project lies in the setup and documentation of a software framework capable of generating ground truth images for ophthalmic image medical analysis where the vitreal, retinal, choroidal and scleral compartments are clearly defined. The mentioned framework includes image pre-processing, model implementation and results evaluation. 
+The contribution of this project lies in the setup and documentation of a framework able to generate synthetic ground truth for ophthalmic image medical analysis where the vitreal, retinal, choroidal and scleral compartments are clearly defined. This framework includes image pre-processing, model implementation and results evaluation. 
 
-From a medical perspective, the final output could offer health care providers and other experts an image where the major layers present in a regular OCT scan are pre-segmented with a high degree of confidence, which can form the basis of different analysis involving choroidal and retinal thickness. 
+From a medical perspective, the final output could offer ophthalmologists, as well as other healthcare providers and researchers, a large dataset with accurately segmented retinal and choroidal layers. Such a dataset can be used as ground truth for various analyses focusing on choroidal and retinal thickness.
 
 \subsection{Material and Methods}
 
 \subsubsection{Methodology}
 
-A Convolutional Neural Network (CNN) was designed based on the U-Net CNN model created by Prof.~Dr.~O.~Ronneberger in 2015 \cite{Ronneberger2015}. According to the general machine learning worklow, we used different techniques of data pre-processing that include vectorization, categorization and augmentation of the annotated images in order to train the network. Hyperparameters were modified both empirically from the result of several training sessions and by using best algorithmic practices for weighting and learning rate selection. Finally, the images resulting of the CNN predictions are evaluated by using different metrics commonly tracked on machine learning projects like the Dice and Jaccard coefficients, sensitivity, specificity and for evaluating the loss function a weighted version of the categorical crossentropy. 
+A Convolutional Neural Network (CNN) was designed based on the U-Net CNN model created by Prof.~Dr.~O.~Ronneberger in 2015 \cite{Ronneberger2015}. According to the general machine learning workflow, we used various techniques of data pre-processing that include vectorization, categorization and augmentation of the annotated images in order to train the network. Hyperparameters were modified both empirically from the result of several training sessions and by using best algorithmic practices for weighting and learning rate selection. Finally, the images resulting of the CNN predictions were evaluated with the support of different metrics commonly used in machine learning, such as the Jaccard coefficients, sensitivity and specificity. To evaluate the loss function we introduced a weighted version of the categorical cross entropy. 
 
 \subsubsection{Tools}
 The framework at its current state is dependent on the following tools : 
@@ -163,9 +164,9 @@ All trainings were performed in the Machine Learning Management Platform (MLMP) 
 
 \section{Medical Background}\label{s:medical_background}
 
-The human eye is a sensory organ that is composed by two different segments of spheres named the anterior and posterior segments \cite{snell1998}.
+The human eye is a sensory organ consisting of two different segments of spheres, the anterior and posterior segment \cite{snell1998}.
 
-The anterior segment is the most front part of the eye, it hosts the cornea, iris and lens and serves to regulate the intensity of the light that is transmitted to the retina which is located in the posterior segment of the eye alongside the vitreous body, choroid and sclera. The function of the posterior segment is to convert light waves into electrical signals that are interpreted by the brain in the form of images \cite{Rhoades2017}. 
+The anterior segment is the foremost part of the eye, it includes the cornea, iris and lens and serves to regulate the intensity of the light transmitted to the retina, which is located in the posterior segment of the eye next to the vitreous body, choroid and sclera. The function of the posterior segment is to convert light waves into electrical signals that are interpreted by the brain in the form of images \cite{Rhoades2017}. 
 
 \begin{figure}[H]
     \centering
@@ -174,15 +175,15 @@ The anterior segment is the most front part of the eye, it hosts the cornea, iri
     \label{fig:eye-anatomy}
 \end{figure}
 
-The area of interest of this report is limited to the posterior segment of the eyeball as the tissues that are present in it have significant clinical value to ophthalmologists in the analysis and diagnosis of refractive errors (myopia) and other other ocular diseases (glaucoma)\cite{Ronchetti2017}. In particular, we will focus in the vitreous body, retina, choroid and sclera as they will form integral part of the set of annotations developed for our research in the field of machine learning. 
+The area of interest of this project is limited to the posterior segment of the eyeball as the tissues therein are of significant clinical value to ophthalmologists in the analysis and diagnosis of refractive errors (myopia) and ocular diseases (glaucoma) \cite{Ronchetti2017}. In particular, we will focus on the vitreous body, retina, choroid and sclera as they will form part of the set of the manually annotated scans used in our project. 
 
-The vitreous body is an structure characterized by a colorless and transparent gel. It's mainly composed by water and other aminoacids, proteins, salts and acids. The vitreous located between the lens and the retina and occupies 4/5 of the total volume of the eye and serves mainly to transmit light from the lens to the retina. It's also believed that it contributes to the convergence power of the eye \cite{snell1998}. 
+The vitreous body is an structure characterized by a colorless and transparent gel. It consists mainly of water and other aminoacids, proteins, salts and acids. The vitreous is located between the lens and the retina and occupies 4/5 of the total volume of the eye. It serves mainly to transmit light from the lens to the retina and is also believed to contribute to the convergence power of the eye \cite{snell1998}. 
 
-Once the light has traveled through the vitreous body, it reaches the retina which is a tissue layer envolving the vitreous. As a part of the central nervous system, the retina transforms light waves captured its photoreceptors into electric signals that travel to the brain via the optic nerve \cite{purves2001}. In other terms, it converts light into electric signals that are sent to the brain and are interpreted as images.
+Once the light has traveled through the vitreous body, it reaches the retina, a layer of nervous tissue that covers the inside of the back two-thirds of the eyeball envolving the vitreous. As a part of the central nervous system, the retina converts light waves detected by its photoreceptors into electric signals that travel to the brain via the optic nerve \cite{purves2001}. In other terms, it converts light into electric signals that are sent to the brain and interpreted there as images.
 
-Supporting the retinal function, between the retina and sclera, the choroid irrigates the outer retina with oxigen due to it's vascular structure through an intrincated layer of capillaries which are connected to arteries via the choroid's vessel layer \cite{snell1998, choroidExpl}. Several studies \cite{Ronchetti2019, Ronchetti2018} indicate that choroidal thickness has a positive correlation with the development of myopia, which is part of the motivation of this work. 
+Due to its vascular structure, the choroid\textquotesingle s irrigates the outer retina with oxigen through an intrinsic layer of capillaries   \cite{snell1998, choroidExpl}. Several studies \cite{Ronchetti2019, Ronchetti2018} indicate that choroidal thickness could be correlated with the development and progression of myopia and various ocular diseases. 
 
-Finally, the sclera protects the inner part of the ocular globe due to its collagenous structure. Together with the cornea, it serves to contain the internal pressure of the eye and also to contain the forces created by the external muscles of the eye during eye movement \cite{Meek2008}.
+Finally, the sclera protects the inner part of the ocular globe through its collagenous structure. Together with the cornea, it serves to contain the internal pressure of the eye and also the forces created by the external muscles of the eye during eye movement \cite{Meek2008}.
 
 \section{Technical Background}\label{s:TechBack}
 
@@ -194,11 +195,11 @@ Optical Coherence Tomography (OCT) is the standard technique for producing accur
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./images/csm_ABC_scans.png}
-    \caption{Scan Types in Optical Coherence Tomography \cite{Willdeman2016}. From left to right: A-scan use a signal depth profile composed of time-gates reflections; B-scan use a frame composed of array of A-scans; Volume use a 3D Dataset composed of array of B-scans.}
+    \caption{Scan Types in Optical Coherence Tomography \cite{Willdeman2016}. From left to right: A-scan use a signal depth profile composed of time-gates reflections; B-scan use a frame composed of array of A-scans; Volume use a 3D dataset composed of array of B-scans.}
     \label{fig:mb-oct-abcscans}
 \end{figure}
 
-As stated in the motivation of this thesis, retinal and choroidal thickness can be measured from OCT scans with the help of annotated ground truths establishing the locations of the tissues' boundaries. In the case of the retina, the Internal Limiting Membrane (ILM) divides it from Vitreous on the upper boundary \cite{MACNAIR2015343}, while the Bruchs Membrane (BM) divides the retina from the choroid \cite{BOOIJ20101} serving as the retina's bottom boundary. Subsequently, the Choroidal-Scleral Interface separates the choroid from the sclera \cite{Ronchetti2018}. The mentioned boundaries create a segmentation map within OCT B-Scans where the vitreous body, retina, choroid and sclera can be analysed as presented in Fig.~\ref{fig:annotated-oct-scan}. 
+As stated in the motivation of this thesis, retinal and choroidal thickness can be measured from OCT scans with the help of annotated ground truths establishing the locations of the tissues\textquotesingle boundaries. In the case of the retina, the Internal Limiting Membrane (ILM) divides it from Vitreous on the upper boundary \cite{MACNAIR2015343}, while the Bruchs Membrane (BM) divides the retina from the choroid \cite{BOOIJ20101} serving as the retina's bottom boundary. Subsequently, the Choroidal-Scleral Interface separates the choroid from the sclera \cite{Ronchetti2018}. The mentioned boundaries create a segmentation map within OCT B-Scans where the vitreous body, retina, choroid and sclera can be analysed as presented in Fig.~\ref{fig:annotated-oct-scan}. 
 
 
 \begin{figure}[H]
@@ -210,40 +211,40 @@ As stated in the motivation of this thesis, retinal and choroidal thickness can 
 
 \subsection{Convolutional Neural Networks}\label{s:cnn}
 
-A CNN is a powerful family of neural networks inspired by biological processes and containing Convolutional Layers, used in the field of deep learning. The design of the connection pattern is inspired from the structure of the neurons in the visual cortex of animals. Modern CNNs are effective in obtaining accurate models, as they require fewer parameters than fully connected architectures, and are often more computationally efficient because convolutions are easily parallelized on GPU cores\cite{DIDLBook}. Furthermore, CNN-based architectures are common in the computer vision field, as they are prized for their efficiency. 
+A CNN is a powerful family of neural networks inspired by biological processes and containing Convolutional Layers, used in the field of deep learning. The design of the connection pattern is inspired by the structure of the neurons in the visual cortex of animals. Modern CNNs are effective for obtaining accurate models, as they require fewer parameters than fully connected architectures, and are often computationally more efficient because convolutions can be easily parallelized on GPU cores \cite{DIDLBook}. Furthermore, CNN-based architectures are widely used in the computer vision field, as they are prized for their efficiency. 
 
-To be functional, Convolutional Networks need some operations, the techniques used by CNN to capture features from images is achieved by applying a series of operations known as convolutions and pooling, both of them will be described in this chapter. 
+To be functional, Convolutional Networks require some operations; capturing features from images is achieved by applying a set of operations known as convolution and pooling, which are described in this chapter. 
 
-In the case where one wishes to process datasets by collecting and annotating pixels of images one can quickly end up with a network having huge dimensions leading to poor GPU performance, for this reason CNNs are used for data that is not tabular\footnote{by tabular we mean data consisting of rows corresponding to examples and columns corresponding to features}\cite{DIDLBook}. The main role of the CNN is to facilitate the processing of images by reducing them to a form that is easier to examine without losing the features that are essential in the obtaining of a good prediction.
+If you want to process datasets by collecting and annotating pixels of images, you can quickly end up with a network that has huge dimensions, which leads to poor GPU performance. For this reason CNNs are used for data that is not tabular\footnote{By ``tabular'' we mean data consisting of rows corresponding to samples and columns corresponding to features.} \cite{DIDLBook}. The main role of the CNN is to facilitate the processing of images by reducing them to a form that is easier to examine without losing the features that are essential for good prediction.
 
 \subsubsection{Convolution Operation}
-An important concept of CNN is spatial invariance, which means that object recognition is not sensitive to their position in the image. In computer vision, adding convolution to the neural network allows the addition of an inductive visual prior whereby objects can appear anywhere.  Sharing the weights over the location of the object significantly reduces the parameters to be learned, the convolution is moved when the object change position \cite{CNNSpatialLocation}. The earliest layers of our network should be implementing translation invariance, meaning that it should respond similarly  regardless of where the objects appears in the image. And they should focus on local regions (locality principle) without regard for the contents of the image in distant regions. \cite{DIDLBook}
+An important concept of CNN is spatial invariance\footnote{Spatial invariance refers to the invariance of the model towards spatial transformations of images such as rotation, translation and scaling.}, which refers to the ability of a CNN model to recognize and identify features even when the input is transformed or slightly modified. In other words, object recognition is not sensitive with respect to their exact position in the image. In computer vision, adding convolution to the neural network allows the addition of an inductive visual prior whereby objects can appear anywhere. Sharing the weights over the location of the object significantly reduces the number of parameters to be learned, the convolution is shifted when the object changes its position \cite{CNNSpatialLocation}. The earliest layers of our network should be implementing translation invariance, i.e., it should respond similarly regardless of where objects appears in the image. In addition, they should focus on local regions (``locality principle'') without regard to the content of the image in distant regions \cite{DIDLBook}.
 
-The translation invariance implies that a shift in the input \(x\) should lead to a shift in the hidden representation \(H\) (represented as matrices in mathematics and as two-dimensional tensors in code). 
+The translation invariance implies that a shift in the input \(x\) should lead to a shift in the hidden representation \(H\) (i.e.~matrices in mathematics and two-dimensional tensors in code). 
 This is a convolution as the weighting pixels at \((i + a, j + b)\) in the vicinity of location
-\((i, j)\) with coefficients \([V]_{a,b}\) to obtain the value \([H]_{i,j}\) .: 
+\((i, j)\) with coefficients \([V]_{a,b}\) to obtain the value \([H]_{i,j}\): 
 \begin{equation}
 \label{eqn:invariance}
 [H]_{i,j} = u + \sum_a\sum_b[V]_{a,b}[X]_{i+a,j+b}
 \end{equation}
-Note that both X and H have the same shape and \([X]_{i,j}\) and \([H]_{i,j}\) denote the pixel at location \((i, j)\) in the input image and hidden representation. The translation invariance is only possible if V and u do not depend on \((i, j)\) \cite{DIDLBook}.
-As described above, in the locality principle , it should no not be necessary to look far away from the location \((i, j)\) to retrives informations to describe what happens in \([H]_{i,j}\), outside a certain range \(|a| > \Delta \) or \(|b| > \Delta\), we should set  \([V]_{a,b} = 0\). And rewrite \([H]_{i,j}\) as follow \cite{DIDLBook}:
+Note that X and H have the same shape while \([X]_{i,j}\) and \([H]_{i,j}\) denote the pixel at location \((i, j)\) in the input image and hidden representation. The translation invariance is only possible if V and u do not depend on \((i, j)\) \cite{DIDLBook}.
+According to the aforementioned locality principle, it should not be necessary to look far away from the location \((i, j)\) to get information about what is happening in \([H]_{i,j}\). Outside a certain range \(|a| > \Delta \) or \(|b| > \Delta\), we should set  \([V]_{a,b} = 0\) and rewrite \([H]_{i,j}\) as follows \cite{DIDLBook}:
 \begin{equation}
 \label{eqn:locality}
 [H]_{i,j} = u + \sum_{a=-\Delta}^{\Delta}\sum_{b=-\Delta}^{\Delta}[V]_{a,b}[X]_{i+a,j+b}
 \end{equation}
-The operation for the spatial invariance \ref{eqn:invariance} and the locality \ref{eqn:locality} are convolutions since in mathematics the convolution between two function \(f\) and \(g\) with \({ I\!R}^d \rightarrow { I\!R}\) is defined as follow \cite{DIDLBook}: 
+The operations that provide spatial invariance (\ref{eqn:invariance}) and locality (\ref{eqn:locality}) are convolutions. In mathematics the convolution between two function \(f\) and \(g\) with \({ I\!R}^d \rightarrow { I\!R}\) is defined as follows \cite{DIDLBook}: 
 \begin{equation}
 (f*g)(x) = \int f(z)g(x-z)dz
 \end{equation}
-(The function measures the overlap between \(f\) and \(g\) when one of the functions is “flipped” and shifted by \(x\). If we use two-dimensional tensors, we have a corresponding sum with indices \((a b)\) for \(f\) and \((i-a, j-b)\) for \(g\), that is very similar to \ref{eqn:locality} (exception of the use of \((i+a, j+b)\) instead) \cite{DIDLBook}:
+In other words, the convolution measures the overlap between \(f\) and \(g\) when one of the functions is “flipped” and shifted by \(x\). If we use two-dimensional tensors, we have a corresponding sum with indices \((a, b)\) for \(f\) and \((i-a, j-b)\) for \(g\), which is very similar to \ref{eqn:locality} (with the exception of using \((i+a, j+b)\) instead) \cite{DIDLBook}:
 \begin{equation}
 (f*g)(i,j) = \sum_{a}\sum_{b} f(a,b)g(i-a,j-b)
 \end{equation}
 
 \subsubsection{Pooling Operation}
-In general, when the need to process images arises, the most efficient way is to progressively reduce the detail of an image (for a given dimension) of our hidden representations. Thus, the higher one goes in the network, the larger the field of perception becomes, so the more the perceived image is composed of generalities and not of details. The final task we want to perform is generally a global one, in the case of this work: to find out where the borderlines between the ILM, the BM and the CSI is. This is why the layers of our network should be sensitive to all the inputs in order to have a global view, this can be achieved by progressively accepting data and producing coarser maps but keeping all the advantages of convolutional layers at the intermediate processing layers. Just as when we want to detect edges, our representation must be invariant to translation as the change of even one pixel can significantly change the image. This is why pooling layers are used, which have the dual purpose of mitigating the location sensitivity of convolutional layers and spatially downsampling the representations. There are several types of (deterministic) pooling operations, here we will discuss max-pooling and average-pooling \cite{DFTPooling}. Like convolutional layers, pooling operators operate on a window of fixed size that moves through the different regions according to their stride \cite{DIDLBook}.
-An example found in \cite{DIDLBook} shows how these operators work. If we take a 3x3 matrix representing our input, and imagine that the operator moves from left to right and up and down from the top-left corner, a max pooling operation will produce a new 2x2 matrix: 
+In general, when processing images, it is more efficient to progressively reduce the detail of an image (for a given dimension) of our hidden representations. Thus, the higher one goes in the network, the larger the field of perception becomes, so the more the perceived image is composed of generalities rather than details. The final task we want to perform is, in the case of this work, a global one: to find out where the borderlines between the ILM, the BM and the CSI is. Therefore, the layers of our network should be sensitive to all the inputs in order to have a global view, this can be achieved by gradually accepting data and generating coarser maps but keeping all the advantages of convolutional layers at the intermediate processing layers. As with edge detection,  our representation must be invariant to translation, since changing just one pixel can change the image significantly. This is why pooling layers are used, which have the dual purpose of mitigating the location sensitivity of convolutional layers and spatially downsampling the representations. There are several types of (deterministic) pooling operations, here we discuss max-pooling and average-pooling \cite{DFTPooling}. Like convolutional layers, pooling operators operate on a fixed-size-window that moves through the different regions according to their step size \cite{DIDLBook}.
+An example found in \cite{DIDLBook} shows how these operators work. If we take a 3$\times$3 matrix representing our input and imagine that the operator from the upper left corner from left to right and up and down, a max-pooling operation will create a new 2$\times$2 matrix: 
 
 \begin{figure}[H]
     \centering
@@ -360,17 +361,17 @@ The model was applied to a dataset composed by 450 OCT B-scans that were augment
 
 \section{Discussion}\label{s:Discussion}
 
-In this section we will detail the process of creating the framework from its inception point to evaluating the final output. In order to standardize its description we have chosen to fit our process to the Machine Learning workflow. 
+In this section, we will detail the process of creating the framework from its inception point to evaluating the final output. In order to standardize its description we have chosen to fit our process to the machine learning workflow. 
 
-\subsection{Data Collection}
-For this project we used a dataset composed of 755 OCT B-scans\footnote{See Sec. \ref{s:TechBack} for more information.} of 500*768 pixels. The data was obtained from Asian patients in the age range of 8-18 years stemming from urban regions with a high prevalence of myopia. The subject were healthy with globally good distance and near vision, no systemic and ocular diseases, ocular trauma or surgery\cite{Ronchetti2019}. The images were acquired by a dual-wavelength eye-tracking OCT system operating simultaneously at the 870 and 1075 nm bands. This system was developed by HuCE-opto-Lab at the Bern University of Applied Sciences in Biel, Switzerland \cite{Ronchetti2019}  before it was transferred and setup at the Hong Kong Polytechnic University’s School of Optometry\footnote{For more information about the OCT dataset we refer the interest reader to \cite{Ronchetti2019}}.
+\subsection{Data Collection}\label{ss:data_collection}
+For this project we used a dataset composed of 755 OCT B-scans\footnote{See Sec.~\ref{s:TechBack} for more details.} of 500$\times$768 pixels. The data was obtained from Asian patients in the age range of 8-18 years stemming from urban regions with a high prevalence of myopia. The subjects were healthy with globally good distance and near vision, no systemic and ocular diseases, ocular trauma or surgery \cite{Ronchetti2019}. The images were acquired by a dual-wavelength eye-tracking OCT system operating simultaneously at the 870 and \SI{1075}{\nano\metre} bands. This system was developed by the HuCE-optoLab of the Bern University of Applied Sciences in Biel, Switzerland under the supervision of Prof.~Christoph Meier and Dr.~Boris Pova\v{z}ay\cite{Ronchetti2019}  before it was transferred and setup at the Hong Kong Polytechnic University\textquotesingle s School of Optometry\footnote{For more information about the OCT dataset we refer the interest reader to \cite{Ronchetti2019}}.
 
 \subsubsection{Data Annotation}
 
-The scans were annotated by a group of 6 ophtalmologists recruited as experts. Using an online tool they were capable of drawing the ILM, BM and CSI boundaries on top of the OCT scans. The scans were randomly distributed among the experts such that each expert got 50 volume stack pairs containing each 8 B-scans pairs. The experts segmented the three boundaries drawing 2400 lines which took approximately 6 h per expert at a rate of 9 sec per line \cite{Ronchetti2019}.
+The scans were annotated by a group of 6 ophthalmologists recruited as experts. Using an online tool they were able to draw the ILM, BM and CSI boundaries in the OCT scans (see \cite{Ronchetti2019} for more details).
 
 \subsubsection{Mask Segmentation}
-Using the set of annotated scans we ran an algorithm to combine the three separate layers into a single image as depicted in Fig. \ref{fig:merged}
+On the set of annotated scans, we ran an algorithm to merge the three separate layers into a single image, as depicted in Fig.~\ref{fig:merged}
 
 \begin{figure}[H]
     \centering
@@ -379,7 +380,7 @@ Using the set of annotated scans we ran an algorithm to combine the three separa
     \label{fig:merged}
 \end{figure}
 
-Finally we assigned a particular value to each pixel in the 4 respective compartments obtaining a segmentation map where we can clearly devise the vitreous, retina, choroid and sclera. Since not all the scans could be processed by our algorithm due to artifacts in the data acquisition and a different number of annotated samples for each one of the layers, the dataset was reduced to a total of 755 fully segmented B-scans.
+As a next step, we assigned a specific value to each pixel in the 4 respective compartments, thus obtaining a segmentation map, in which we can clearly delineate the vitreous, retina, choroid and sclera. Because of artifacts in data acquisition and a different number of annotated samples for each of the layers, not all scans could be processed by our algorithm, so the dataset was reduced to a total of 755 fully segmented B-scans.
 
 \begin{figure}[H]
     \centering
@@ -389,8 +390,8 @@ Finally we assigned a particular value to each pixel in the 4 respective compart
 \end{figure}
 
 \subsection{Data Preparation}\label{ss:datapreparation}
-First we define a size for the images we will feed to our model, here we chose the size 256x256 since it is the default size of images used in Keras \cite{chollet2015keras}. Also we could not work with images that have a high resolution because it would cause memory overflow during the training of the model. The data can be loaded via the method \emph{load\_data()} defined as follow:
-\begin{lstlisting}[caption=The method to load data can be found in the \emph{helper.py} file]
+First we define a size for the images we will feed to our model with, here we chose the size 256$\times$256 as this is the default size of images used in Keras \cite{chollet2015keras}. Also, we could not work with images that have a high resolution, as this would cause memory overflow during the training of the model. The data can be loaded via the method \emph{load\_data()} defined as follows:
+\begin{lstlisting}[caption=The method for loading data can be found in the \emph{helper.py} file]
 def load_data(datapath, is_train_data):
     images = []
     for directory_path in glob.glob(datapath):
@@ -409,7 +410,7 @@ def load_data(datapath, is_train_data):
     return images
 \end{lstlisting}
 
-We use LabelEncoder \cite{scikit-learn} to encode our label with a value between 0 and n-classes-1, where n is the number of distinct label, here we have four: the vitreous, retina, choroid and sclera. This will allow us to add weight to each of our class and help to reduce class inbalance in our model. By class imabalance we mean that not all our class have the same number of pixels, this can lead to bias in the model. If we take the segmentation map in Fig. \ref{fig:annotated-layers}, we can see that the vitreous covers much more pixels than the retina, therefore to achieve good performance the model could tend to focus more on the vitreous pixels. So if one class has more pixels than another, it means that it has a higher weight in the model accuracy results than another because it has a higher percentage of pixels in the image. The goal is to balance the weight of the classes to avoid this kind of situation which could lead to a biased model. To do so we use the \emph{'balanced'} parameter of the sklearn\cite{scikit-learn} \emph{compute\_class\_weight} method which will compute the weights automatically using a Logistic Regression based algorithm \cite{scikit-learn} to balance out our dataset. 
+We use \emph{LabelEncoder} \cite{scikit-learn} to encode our label with a value between 0 and n-classes-1, where n is the number of distinct labels, here we have four: the vitreous, retina, choroid and sclera. This allows us to add a weight to each of our classes and help to reduce class imbalance in our model. By ``class imbalance'' we mean that not all our classes have the same number of pixels; consequently, this can lead to bias in the model. If we look at the segmentation map in Fig.~\ref{fig:annotated-layers}, we can see that the vitreous covers much more pixels than the retina. Therefore, to achieve good performance, the model might tend to focus more on the vitreous pixels. So if one class has more pixels than another, it means that it has a higher weight in the model accuracy results than another because it has a higher percentage of pixels in the image. The goal is to balance the weighting of the classes to avoid this kind of situation which could lead to a biased model. To achieve this, we use the \emph{'balanced'} parameter of the \emph{sklearn} \cite{scikit-learn} \emph{compute\_class\_weight} method which automatically compute the weights using a logistic regression based algorithm \cite{scikit-learn} to balance our dataset. 
 
 \begin{lstlisting}[caption={Encoding of the labels and weights attributions to the class, code from \emph{train.py} file}]
 from sklearn.preprocessing import LabelEncoder
@@ -429,7 +430,7 @@ class_weights = class_weight.compute_class_weight(
                      train_masks_reshaped_encoded)
 \end{lstlisting}
 
-The normalization of a vector in mathematics means dividing by a norm of the vector \cite{Normalization_Vector_Machines:2001}, the idea is to make the Euclidean length of the vector equal to one. In neural network normalization is important to obtain good results and reduce the calculation time \cite{Normalizazion_NN}, and usually means re-scaling by the minimum and range of the vector, to make all the elements lie between 0 and 1. Normalisation is not a requirement for multi-layer perceptron but we still opted for it because our activation function, softmax (see sec. \ref{tech:softmax}), has a range of [0,1] and we therefore want to ensure that our target values lie within that range.
+Normalization of a vector in mathematics means dividing the vector by its norm \cite{Normalization_Vector_Machines:2001}. In other words, the idea is to make the Euclidean length of the vector equal to one. In neural networks, normalization is important to obtain good results and reduce the calculation time \cite{Normalizazion_NN}, and usually means re-scaling by the minimum and range of the vector, to make all the elements lie between 0 and 1. Normalisation is not a requirement for multi-layer perceptron but we still opted for it because our activation function, softmax (see sec. \ref{tech:softmax}), has a range of [0,1] and we therefore want to ensure that our target values lie within that range.
 
 \begin{lstlisting}[caption={Normalize the data, the code can be found in the \emph{train.py} file}]
 #Normalize Data
@@ -439,7 +440,7 @@ train_images = normalize(train_images, axis=1)
 train_masks_input = np.expand_dims(train_masks, axis=3)
 \end{lstlisting}
 
-We can now split our data-set in two parts, one for the training and one for testing. We do this as a means of estimating classification accuracy \cite{DatasetSplitting:2011}. We chose to split that data-set in a 80\%-20\% \footnote{80\% of the images for the training set and the remaining for the testing set} proportion, as we don't have a a huge dataset we wanted to keep most of it for the training of the model.
+We can now split our data-set in two parts, one for the training and one for testing. We do this as a means of estimating classification accuracy \cite{DatasetSplitting:2011}. We chose to split that data-set in a 80\%-20\% \footnote{80\% of the images for the training set and the remaining 20\% for the testing set} proportion, as we don't have a a huge dataset we wanted to keep most of it for the training of the model.
 \begin{lstlisting}[caption={Dataset split for testing and training from the \emph{train.py} file}, label={lst:data-split}]
 # Picking 20% for testing and remaining for training
 from sklearn.model_selection import train_test_split
@@ -454,7 +455,7 @@ train_masks_cat = to_categorical(y_train, num_classes=n_classes)
 y_train_cat = train_masks_cat.reshape((y_train.shape[0], y_train.shape[1], y_train.shape[2], n_classes))
 \end{lstlisting}
 
-Usually deep learning requires a large volume of data to have good performances, but as we saw in Sec. \ref{Methodology:data} we only have 755 OCT B-scans. We already use U-net (Sec. \ref{tech:unet}) to overcome this problem because it was specially designed for small dataset usage, one top of that data augmentation can be added to artificially increase the number of data we feed to the model. Data augmentation is a widely adopted approach for increasing the amount of training data \cite{AugAndEval:2017} but it could be at the expense of a loss of quality as too harsh modifications lead to loss of information in the data. This is even more true in our case because the OCT B-scans are presuppose nanometer precision (see Sec. \ref{Methodology:data}), we therefore want to be cautious in the choice of augmentation parameters.
+Usually deep learning requires a large volume of data to have good performances, but as we saw in Sec. \ref{Methodology:data} we only have 755 OCT B-scans. We already use U-net (Sec.~\ref{tech:unet}) to overcome this problem because it was specially designed for small dataset usage, one top of that data augmentation can be added to artificially increase the number of data we feed to the model. Data augmentation is a widely adopted approach for increasing the amount of training data \cite{AugAndEval:2017} but it could be at the expense of a loss of quality as too harsh modifications lead to loss of information in the data. This is even more true in our case because the OCT B-scans are presuppose nanometer precision (see Sec. \ref{Methodology:data}), we therefore want to be cautious in the choice of augmentation parameters.
 We chose a rotation of maximum 5 degrees because after some testing we realized that more rotation would lead to too much loss on the borders of the images and as the scan are usually similarly in the spatial positioning of the layers it would mislead the model. The \emph{"reflect" fill-mode} to obtain a more consistent result to replace missing part of the images. We use an elastic function to compute the distortion, the function creates random displacement fields for height and width and smoothing the fields with a Gaussian. 
 \begin{lstlisting}[caption={Base generator for image augmentation, the definition of the 2 seperate generator (image and mask) can be found in \emph{train.py}}]
 train_datagen= ImageDataGenerator(rotation_range=5,
@@ -753,6 +754,79 @@ In order to quantify the error between our models' output and the ground truth, 
    \label{fig:modelloss}
 \end{figure}
 
+Aiming to analyse the robustness of our results, a set of statistical scores and tests were calculated. The pixel detailed information on the predictions allowed us to locate the tissue boundaries ILM, BM and CSI. Using this information we calculated the retinal and choroidal thickness for both the ground truth annotations and their predictions. Calculating both tissue layer's thickness allows us to compare further the resulting error find the degree of confidence of both models. The outcome of these tests are described in table \ref{tab:statistical_tests}.
+\begin{table}[H]
+    \begin{tabular}{l c|c|c|c|c}
+         \textbf{Model} &\textbf{Layer} & \textbf{Test}& \textbf{P-value}  \\
+         \hline
+         A & Retina & Mann-Whitney U-Test & 3.14e-5 \\
+         A & Choroid & Mann-Withney U-Test & 0.6483 \\
+         A & Retina & T-test & 1.25e-5 \\
+         A & Choroid & T-test & 0.6567 \\
+         B & Retina & Mann-Whitney U-Test & 0.1115 \\
+         B & Choroid & Mann-Withney U-Test & 0.3797 \\
+         B & Retina & T-test & 0.1009 \\
+         B & Choroid & T-test & 0.4571
+    \end{tabular}
+    \caption{Statistical Tests}
+    \label{tab:statistical_tests}
+\end{table}
+
+Collecting the error expressed in micrometers allows us to understand how far the predictions were from the truth. The result of this comparison can be found in table \ref{tab:Error_Scores}. The Mean Absolute Error (MAE) describes  that both models have an average error under 3.5 $\mu m$ for both layers. Root Mean Squared Error (RMSE) as opposed to the absolute version penalizes the extreme values, therefore the measurements observed in averaging the data were significantly larger and tell us that on average when our models make a mistake the error can be quite significant, specially for Model A (trained using image augmentation) and the Choroid compartment of Model B. However this was not an often case when observing the low mean MAE's measures.
+
+\begin{table}[H]
+    \begin{tabular}{l c|c|c|c|c}
+         \textbf{Model} &\textbf{Layer} & \textbf{Score}& \textbf{Error($\mu m$)}  \\
+         \hline
+         A & Retina & Root Mean Squared Error &  8.5793 \\
+         A & Choroid & Root Mean Squared Error & 25.4270 \\
+         A & Retina & Mean Absolute Error & 2.8557 \\
+         A & Choroid & Mean Absolute Error & 3.4331 \\
+         B & Retina & Root Mean Squared Error & 2.2634 \\
+         B & Choroid & Root Mean Squared Error & 14.5819 \\
+         B & Retina & Mean Absolute Error & 1.0735 \\
+         B & Choroid & Mean Absolute Error & 2.3225 \\
+    \end{tabular}
+    \caption{Statistical Error Scores}
+    \label{tab:Error_Scores}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{1\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{./results/model_A_retinal_thickness.png}
+  \caption{Model A}
+  \label{fig:model_a_specificity}
+\end{subfigure}
+\begin{subfigure}{1\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{./results/model_B_retinal_thickness.png}
+  \caption{Model B}
+  \label{fig:modelb_specificity}
+\end{subfigure}
+\caption{Retinal Thickness Measures ($\mu m$)}
+\label{fig:specificity_results}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{1\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{./results/model_A_choroidal_thickness.png}
+  \caption{Model A}
+  \label{fig:model_a_specificity}
+\end{subfigure}
+\begin{subfigure}{1\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{./results/model_B_choroidal_thickness.png}
+  \caption{Model B}
+  \label{fig:modelb_specificity}
+\end{subfigure}
+\caption{Choroidal Thickness Measures ($\mu m$)}
+\label{fig:specificity_results}
+\end{figure}
+
 These results validate and indicate that an automated generation of synthetic ground truth for ophthalmic medical image analysis is technically feasible and produces segmentation maps similar to those of an expert ophthalmologist. 
 
 \section{Conclusion}
@@ -794,8 +868,12 @@ Finally, stacking up a series of automatically segmented B-scans to obtain a C-s
 \huge{\textbf{ Declaration of Independence}}\\[40mm]
 \end{center}
 \large
-We confirm that the above work has been produced by the authors without any unauthorized assistance and without the use of any other means than those indicated, and that I have marked as such all passages that have been taken literally or meaningfully from published or unpublished writings.\\[50mm]
-Bienne, the \today
+We confirm that the above work has been produced by the authors without any unauthorized assistance and without the use of any other means than those indicated, and that I have marked as such all passages that have been taken literally or meaningfully from published or unpublished writings.\\[30mm]
+Bienne, the \today \\[10mm]
+Emeline Lieberherr, Rayner Oswaldo Zorrilla Alfonzo
+\begin{figure}[H]
+    \includegraphics[width=0.5\textwidth]{./images/signatures.png}
+\end{figure}
 
 \newpage
 \appendix
@@ -803,10 +881,10 @@ Bienne, the \today
 \addcontentsline{toc}{section}{Appendices}
 \renewcommand{\thesubsection}{\Alph{subsection}}
 
-\subsection{Project architecture diagram}
+\subsection{Project Architecture Diagram}
 
 \includepdf[pages={1}]{./doc/appendix/projectArchitecture.pdf}
-\subsection{Planning of work and tasks for the project}
+\subsection{Planning of Work and Tasks for the Project}
 \includepdf[pages={1}]{./doc/appendix/plannification.pdf}
 
 \end{document}
