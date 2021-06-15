@@ -111,7 +111,7 @@ Submission deadline: & Thursday, June 17th, 2021
 \newpage
 \pagenumbering{Roman}
 \tableofcontents
-\listofappendices
+
 
 
 \newpage
@@ -136,7 +136,7 @@ The aim of this project is to develop a deep learning model able to process opht
 
 The contribution of this project lies in the setup and documentation of a framework able to generate synthetic ground truth for ophthalmic image medical analysis where the vitreal, retinal, choroidal and scleral compartments are clearly defined. This framework includes image pre-processing, model implementation and results evaluation. 
 
-From a medical perspective, the final output could offer ophthalmologists, as well as other healthcare providers and researchers, a large dataset with accurately segmented retinal and choroidal layers. Such a dataset can be used as ground truth for various analyses focusing on choroidal and retinal thickness.
+From a medical perspective, the final output could offer ophthalmologists, as well as other healthcare professionals and researchers, a large dataset with accurately segmented retinal and choroidal layers. Such a dataset can be used as ground truth for various analyses focusing on choroidal and retinal thickness.
 
 \subsection{Material and Methods}
 
@@ -181,7 +181,7 @@ The vitreous body is an structure characterized by a colorless and transparent g
 
 Once the light has traveled through the vitreous body, it reaches the retina, a layer of nervous tissue that covers the inside of the back two-thirds of the eyeball envolving the vitreous. As a part of the central nervous system, the retina converts light waves detected by its photoreceptors into electric signals that travel to the brain via the optic nerve \cite{purves2001}. In other terms, it converts light into electric signals that are sent to the brain and interpreted there as images.
 
-Due to its vascular structure, the choroid\textquotesingle s irrigates the outer retina with oxigen through an intrinsic layer of capillaries   \cite{snell1998, choroidExpl}. Several studies \cite{Ronchetti2019, Ronchetti2018} indicate that choroidal thickness could be correlated with the development and progression of myopia and various ocular diseases. 
+Due to its vascular structure, the choroid\textquotesingle s irrigates the outer retina with oxigen through an intrinsic layer of capillaries   \cite{snell1998, choroidExpl}. Several studies \cite{Ronchetti2019, Ronchetti2018, Ho2013} indicate that choroidal thickness could be correlated with the development and progression of myopia and various ocular diseases. 
 
 Finally, the sclera protects the inner part of the ocular globe through its collagenous structure. Together with the cornea, it serves to contain the internal pressure of the eye and also the forces created by the external muscles of the eye during eye movement \cite{Meek2008}.
 
@@ -189,7 +189,7 @@ Finally, the sclera protects the inner part of the ocular globe through its coll
 
 
 \subsection{Optical Coherence Tomography}
-Optical Coherence Tomography (OCT) is the standard technique for producing accurate visualizations of ophthalmic medical images \cite{Garrido2014}. Since OCT uses near-infrared low-coherence light waves to produce measurements of the reflectivity vs. depth (also known as A-scans\cite{Garrido2014}) it represents a non-invasive procedure to extract information from the ocular globe structure. Several A-scans from consecutive zones can be combined in order to form a 2D image of the posterior segment of the eye where the vitreous, retina, choroid and sclera can be clearly located. Finally, a contiguous set of B-scans produces a volumetric image that ophtalmologist can use to first evaluate the retinal and choroidal structure and second calculate the layers thickness and issue diagnoses on several type of diseases including various ocular diseases \cite{Ronchetti2019}, Diabetes \cite{Jiang2018}, Alzheimer, Glaucoma and other neurodegenerative diseases \cite{DENHAAN2017162}.   
+Optical Coherence Tomography (OCT) is the state-of-the-art technique for producing accurate visualizations of ophthalmic medical images \cite{Garrido2014}. Since OCT uses near-infrared low-coherence light waves to produce measurements of the reflectivity as a function of depth (also known as A-scans\cite{Garrido2014}) it represents a non-invasive procedure to extract information from the ocular globe structure. Multiple A-scans from successive zones can be combined to produce a 2D image of the posterior segment of the eye, where the vitreous, retina, choroid and sclera are located. Finally, a contiguous set of B-scans produces a volumetric image that the ophtalmologist can use, firstly, to  evaluate the retinal and choroidal structure and, secondly, to calculate the layers thickness and make diagnoses for various types of diseases including several ocular diseases \cite{Ronchetti2019}, Diabetes \cite{Jiang2018}, Alzheimer\textquotesingle s disease, Glaucoma and other neurodegenerative diseases \cite{DENHAAN2017162}.   
 
 
 \begin{figure}[H]
@@ -199,13 +199,13 @@ Optical Coherence Tomography (OCT) is the standard technique for producing accur
     \label{fig:mb-oct-abcscans}
 \end{figure}
 
-As stated in the motivation of this thesis, retinal and choroidal thickness can be measured from OCT scans with the help of annotated ground truths establishing the locations of the tissues\textquotesingle boundaries. In the case of the retina, the Internal Limiting Membrane (ILM) divides it from Vitreous on the upper boundary \cite{MACNAIR2015343}, while the Bruchs Membrane (BM) divides the retina from the choroid \cite{BOOIJ20101} serving as the retina's bottom boundary. Subsequently, the Choroidal-Scleral Interface separates the choroid from the sclera \cite{Ronchetti2018}. The mentioned boundaries create a segmentation map within OCT B-Scans where the vitreous body, retina, choroid and sclera can be analysed as presented in Fig.~\ref{fig:annotated-oct-scan}. 
+As stated in the motivation of this thesis, retinal and choroidal thickness can be measured from OCT scans using annotated ground truths establishing the locations of the tissues\textquotesingle boundaries. In the case of the retina, the Internal Limiting Membrane (ILM) divides it from the Vitreous at the upper boundary \cite{MACNAIR2015343}, while Bruch\textquotesingle s Membrane (BM) divides the retina from the choroid \cite{BOOIJ20101} serving as the retina\textquotesingle s bottom boundary. Subsequently, the Choroidal-Scleral Interface separates the choroid from the sclera \cite{Ronchetti2018}. The mentioned boundaries create a segmentation map within the OCT image, where the segmented vitreous body, retina, choroid and sclera look like as in Fig.~\ref{fig:annotated-oct-scan}. 
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./images/OCT-Scan.png}
-    \caption{A B-scan with segmented layers from top to bottom:  Internal Limiting Membrane (ILM),  Bruch's Membrane (BM), Choroid-Sclera Interface (CSI) \cite{Ronchetti2019}}
+    \caption{A B-scan with segmented layers from top to bottom:  Internal Limiting Membrane (ILM),  Bruch's Membrane (BM), Choroid-Sclera Interface (CSI). \cite{Ronchetti2019}}
     \label{fig:annotated-oct-scan}
 \end{figure}
 
@@ -218,11 +218,11 @@ To be functional, Convolutional Networks require some operations; capturing feat
 If you want to process datasets by collecting and annotating pixels of images, you can quickly end up with a network that has huge dimensions, which leads to poor GPU performance. For this reason CNNs are used for data that is not tabular\footnote{By ``tabular'' we mean data consisting of rows corresponding to samples and columns corresponding to features.} \cite{DIDLBook}. The main role of the CNN is to facilitate the processing of images by reducing them to a form that is easier to examine without losing the features that are essential for good prediction.
 
 \subsubsection{Convolution Operation}
-An important concept of CNN is spatial invariance\footnote{Spatial invariance refers to the invariance of the model towards spatial transformations of images such as rotation, translation and scaling.}, which refers to the ability of a CNN model to recognize and identify features even when the input is transformed or slightly modified. In other words, object recognition is not sensitive with respect to their exact position in the image. In computer vision, adding convolution to the neural network allows the addition of an inductive visual prior whereby objects can appear anywhere. Sharing the weights over the location of the object significantly reduces the number of parameters to be learned, the convolution is shifted when the object changes its position \cite{CNNSpatialLocation}. The earliest layers of our network should be implementing translation invariance, i.e., it should respond similarly regardless of where objects appears in the image. In addition, they should focus on local regions (``locality principle'') without regard to the content of the image in distant regions \cite{DIDLBook}.
+An important concept of CNN is spatial invariance\footnote{Spatial invariance refers to the invariance of the model towards spatial transformations of images such as rotation, translation and scaling.}, which refers to the ability of a CNN model to recognize and identify features even when the input is transformed or slightly modified. In other words, object recognition is not sensitive with respect to their exact position in the image. In computer vision, adding convolution to the neural network allows the addition of an inductive visual prior whereby objects can appear anywhere. Sharing the weights over the location of the object significantly reduces the number of parameters to be learned, the convolution is shifted when the object changes its position, meaning that if the object on the image is moved, the convolution moves, making it equivariant to the translation  \cite{CNNSpatialLocation}. The earliest layers of our network should be implementing translation invariance, i.e., it should respond similarly regardless of where objects appears in the image. In addition, they should focus on local regions (``locality principle'') without regard to the content of the image in distant regions \cite{DIDLBook}.
 
 The translation invariance implies that a shift in the input \(x\) should lead to a shift in the hidden representation \(H\) (i.e.~matrices in mathematics and two-dimensional tensors in code). 
-This is a convolution as the weighting pixels at \((i + a, j + b)\) in the vicinity of location
-\((i, j)\) with coefficients \([V]_{a,b}\) to obtain the value \([H]_{i,j}\): 
+This is a covolution, because in effect, to obtain the value \([H]_{i,j}\), we weight the pixels at \((i + a, j + b)\) near the location \((i, j)\) with coefficients \([V]_{a,b}\):
+ 
 \begin{equation}
 \label{eqn:invariance}
 [H]_{i,j} = u + \sum_a\sum_b[V]_{a,b}[X]_{i+a,j+b}
@@ -251,63 +251,63 @@ An example found in \cite{DIDLBook} shows how these operators work. If we take a
     \includegraphics[width=0.8\textwidth]{./images/pooling_example.png}
     \caption{Pooling Operation example  \cite{DIDLBook}}
 \end{figure}
-Basically the max-pooling operation is to take the max value of a part of matrix (left blue) and place it in a new matrix (right) and then move and repeat this possess until the new matrix is populated.
+Basically the max-pooling operation consists of taking the maximum value of a part of matrix (left blue) and placing it in a new matrix (right) and then moving it and repeating this process until the new matrix is filled.
 \[max(0, 1, 3, 4) = 4,\]
 \[max(1, 2, 4, 5) = 5,\]
 \[max(3, 4, 6, 7) = 7,\]
 \[max(4, 5, 7, 8) = 8.\]
 
 
-as well as average -pooling would have given:
+as well as average-pooling would have given:
 \[average (0, 1, 3, 4) = 2,\]
 \[average (1, 2, 4, 5) = 3,\]
 \[average (3, 4, 6, 7) = 5,\]
 \[average (4, 5, 7, 8) = 6.\]
 
 \subsubsection{Softmax Operation}\label{tech:softmax}
-The softmax function is a logistic function generalized to multiple dimensions and is used as an activation function for neural networks. It is used to normalize the input vector z of K real numbers to a distribution consisting of K probabilities over predicted output classes. In this project we have four classes (vitreous, retina, choroid, sclera), therefore using softmax is relevant since it is a classifier which has excellent performance for multi-classification tasks and will often be used as the final layer of the network \cite{SoftMaxClassification}. 
-The traditional softmax classifier can be described as follow: let  K be the number of classes, \(z_i\) we obtain  label and \(z_j\) the j-the element of the vector of class scores \cite{SoftMaxClassification, DIDLBook} :
+The softmax function is a logistic function generalized to multiple dimensions and is used as an activation function for neural networks. It is used to normalize the input vector z of K real numbers to a distribution consisting of K probabilities over predicted output classes. In this project, we have four classes (vitreous, retina, choroid, and sclera), so the use of softmax is relevant because it is a classifier that has excellent performance for multi-classification tasks and is often used as the final layer of the network \cite{SoftMaxClassification}. 
+The traditional softmax classifier can be described as follows: let K be the number of classes, with \(z_i\) we obtain the label and with \(z_j\) the j$^\mathrm{th}$ element of the vector of class scores, then we obtain \cite{SoftMaxClassification, DIDLBook}:
 
 \begin{equation}
 \sigma(z_{ij}) = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}
 \end{equation}
-Once the convolution and pooling function have repeated until we have a pixel to be classified, the softmax function is used to determine the probability that this pixel belong to a certain class.
+After repeating the convolution and pooling functions until we have a pixel to classify,  the softmax function is used to determine the probability that this pixel belongs to a particular class.
 
 \subsection{U-net}\label{tech:unet}
 
-U-net is a CNN architecture developed for the field of biological images where samples are scarce and the outputs involve assigning certain regions of the image to one or more classes. Previously, an sliding window was the standard method to perform this task, but the method is computationally expensive and requires an enormous amount of time depending on the image dimensions \cite{Ronneberger2015}. Therefore, in 2015 Prof. Dr. Olaf Ronneberger from the University of Freiburg in Germany developed an architecture consisting first of a contracting or encoding path that uses a combination of convolutional and pooling operations in order to aggregate and classify pixels. Once the pixel has been recognized the architecture proposes a second expansive path using up-sampling operations where the classified pixels are concatenated with features from the contracting or decoding path to add localization information. 
+The U-net is a CNN architecture developed for the field of biological images,  where there are few samples and the outputs consist of assigning specific regions of the image to one or more classes. Previously, a sliding window was the standard method to perform this task, but the method is computationally expensive and requires a huge amount of time depending on the image dimensions \cite{Ronneberger2015}. Therefore, in 2015 Prof.~Dr.~Olaf Ronneberger from the University of Freiburg in Germany developed an architecture that initially consists of a contracting or encoding path that uses a combination of convolutional and pooling operations in order to aggregate and classify pixels. Once the pixel is recognized, the architecture proposes a second expansive path using up-sampling operations, where the classified pixels are concatenated with features from the contracting or decoding path to add localization information. 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./images/Unet-architecture.png}
-    \caption{U-net architecture \cite{Ronneberger2015}. The blue boxes represent multichannel feature maps while the arrows represent the different mathematical operations described in Sec. \ref{s:cnn}    }
+    \caption{U-net architecture \cite{Ronneberger2015}. The blue boxes represent multichannel feature maps, while the arrows represent the different mathematical operations described in Sec.~\ref{s:cnn}.    }
 \end{figure}
 
-The architecture is faster and less expensive than sliding windows since pixel features are aggregated to avoid classifying them individually. The second most important contribution of the paper is the idea of using image augmentation to circumvent the problem of image scarcity. By augmenting the image dataset, we apply a series of common image transformation operations in order to slightly modify the base image and create synthetic copies that reinforce learning. The detail of these operations is explained in Sec. \ref{ss:datapreparation}.
+The architecture is faster and less expensive than sliding windows because pixel features are aggregated to avoid classifying them individually. The second major contribution of \cite{Ronneberger2015} is the idea of using image augmentation to overcome the problem of image sparseness. By augmenting the image dataset, we apply a number of common image transformation operations to slightly modify the base image and create synthetic copies that supports learning. The details of these operations are explained in Sec.~\ref{ss:datapreparation}.
 
 \section{Previous Work}\label{s:prevWork}
-\subsection{Computer Vision Methods for Detection of Early Choroidal Thickness Changes in Myopic Asian School Children}
+\subsection{Computer Vision Methods for Detection of Early Retinal and Choroidal Thickness Changes in Children}
 
-Computer vision methods for the automated segmentation of inner retinal and choroidal layers obtained from optical coherence tomography (OCT) imaging \cite{Ronchetti2019statistic} can be used to generate a reliable set of annotated scans. 
-The contribution of this project lies in the documentation and explanation of the most frequent methods used for measuring retinal thickness from an algorithmic perspective to provide a framework to easily extract features from OCT B-scans. 
-There are several approaches for detecting retinal boundaries in OCT B-scans, among them we can cite pixel intensity variations, texture analysis and graph search-based segmentation techniques. Pixel intensity variations are often used when calculating the total retinal thickness \cite{Alonso-Caneiro2013}, the method involves a series of computer graphic processing steps where each pixel of the image is compared to a threshold chosen according to the color intensity of the pixels that contain the information about the location of the boundary \cite{Fabritius:09}. 
+Computer vision methods for automated segmentation of inner retinal and choroidal layers obtained from OCT imaging \cite{Ronchetti2019statistic} can be used to generate a reliable set of annotated scans. 
+The contribution of this project lies in the documentation and explanation of the most frequent methods for measuring retinal (and choroidal) thickness from an algorithmic perspective to provide a framework to easily extract features from OCT B-scans. 
+There are several approaches for detecting retinal boundaries in OCT B-scans, among them we can cite pixel intensity variations, texture analysis and graph search-based segmentation techniques. Pixel intensity variations are often used when calculating the overall retinal thickness \cite{Alonso-Caneiro2013}, the method involves a series of computer graphic processing steps where each pixel of the image is compared to a threshold value chosen according to the color intensity of the pixels that contain the information about the location of the boundary \cite{Fabritius:09}. 
 \\
-In the case of the ILM, it can be easily extracted because the lens pixels in the OCT scans are mostly black while the membrane's pixels are mostly white, this is mainly due to the density of the element, the more dense the element is, the whiter it will appear in the image \cite{Brar597}. Therefore, taking the image from the top left corner, one can run a search algorithm that finds the first white pixel \footnote{The first pixel that is over the threshold} from top to bottom and return its position. Running this same algorithm across the $x$ axis produces us an array of pixels that can be smoothed by using cubic-spline interpolations that corresponds to the ILM. The process for extracting the BM inner-most layer is the same, since the sclera presents opaque pixels that can be omitted by the algorithm, the process would start from the bottom left corner and runs the algorithm from bottom to top searching white pixels until it reaches the BM. The CSI is ignored in this works since the choroid’s boundary with the sclera is way too hard to identify using pixel intensity variation. 
-The retinal thickness was also computed to output an average thickness and an average thickness in 5 zones, producing the following image:
+In the case of the ILM, it can be easily extracted because the lens pixels in the OCT scans are mostly black, while the pixels of the membrane are mostly white, this is mainly due to the density of the element, the more dense the element is, the whiter it will appear in the image \cite{Brar597}. Therefore, taking the image from the top left corner, one can run a search algorithm that finds the first white pixel \footnote{The first pixel that is above the threshold.} from top to bottom and returns its position. Running this same algorithm across the $x$-axis produces an array of pixels that can be smoothed using cubic-spline interpolations, corresponding to the ILM. The process for extracting BM\textquotesingle s inner-most layer is the same: since the sclera has opaque pixels that can be omitted by the algorithm, the process would start in the bottom left corner and runs the algorithm from the bottom up looking for white pixels until it reaches the BM. The CSI is ignored in this works since the choroid\textquotesingle s boundary with the sclera is way too difficult to identify using pixel intensity variation. 
+Retinal thickness was also calculated to output an overall average thickness and an average thickness in five zones, resulting the following image:
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{./images/ILM_BM_Extracted.png}
-    \caption{Final rendering of the ILM, BM and retina thinckness}
+    \caption{Final rendering of the ILM, BM and retinal thickness}
     \label{fig:final_rendering}
 \end{figure}
 
-During this study, it has been confirmed that OCT scan quality can greatly impact the result of an automated solution and potentially break the smoothing algorithm in the post-processing phase. When the scan had too much artefact it was almost impossible for the algorithm to correctly identify the ILM or the BM. Using this method only might result in a solution that cannot be fully automated, thus other methods like graph-based search must be explored. In this case, adjusting the natural smoothing spline parameter can improve the accuracy of the detected boundaries, but only in certain cases which fully depend on the OCT scans. To automate the process of generating annotations for a machine learning model, either a manual approach or a semi-automated solution might produce better results that are more accurate to the actual membrane's position.  
+During this study, it has been confirmed that OCT scan quality can critically affect the result of an automated solution and potentially break the smoothing algorithm in the post-processing phase. When the scan had too much artifacts, it was almost impossible for the algorithm to correctly identify the ILM or BM. Using this method alone might result in a solution that cannot be fully automated, thus other methods, such as graph-based search must be explored. In this case, adjusting the natural smoothing spline parameter can improve the accuracy of the detected boundaries, but only in certain cases that depend entirely on the OCT scans. To automate the process of generating annotations for a machine learning model, either a manual approach or a semi-automated solution could provide better results that more accurately match the actual position of the membrane.  
 
 \subsection{Literature Review}
-There have been efforts to automate OCT scan segmentation using deep learning methods, although one of its principal limitations is described in Ronchetti et al. \cite{Ronchetti2019} and Alonso-Caneiro et al. \cite{Alonso-Caneiro2013} as a low degree of interannotator agreement when detecting the CSI, which would introduce significant differences in the class segmentation and consequently would lead to inconsistencies in choroidal and retinal thickness measurements. Moreover, it has been shown in \cite{Maloca2021} that the performance of deep learning methods is at it's best an average of the experts' annotations.
+There have been efforts to automate OCT scan segmentation using deep learning methods, although one of its principal limitations is described in Ronchetti et al.~\cite{Ronchetti2019} and Alonso-Caneiro et al.~\cite{Alonso-Caneiro2013} as a low degree of inter-observer agreement in detecting the CSI, which would lead to significant differences in class segmentation and consequently inconsistencies in the measurement of choroidal and retinal thickness. Furthermore, it was shown in \cite{Maloca2021} that the performance of deep learning methods is, at best, an average of the annotations of the experts.
 
-In 2017, Roy et al. \cite{Roy2017} proposed a fully convolutional deep learning architecture to segment retinal layers and fluid masses in OCT scans called ReLayNet. The architecture is used to train a joint loss function composed by  a weighted logistic regression and a Dice overlap. It proposes a similar encoder-decoder architecture using convolutional and pooling operations and additionally adding a softmax operation block for classifying pixels.
+In 2017, Roy et al.~\cite{Roy2017} proposed a fully convolutional deep learning architecture for segmenting  retinal layers and fluid masses in OCT scans called ReLayNet. The architecture is used to train a joint loss function consisting of weighted logistic regression and Dice overlap. A similar encoder-decoder architecture is proposed that uses convolutional and pooling operations and additionally adds a softmax operation block to classify pixels.
 
 \begin{figure}[H]
     \centering
@@ -315,51 +315,51 @@ In 2017, Roy et al. \cite{Roy2017} proposed a fully convolutional deep learning 
     \caption{ReLaynet architecture \cite{Roy2017}.}
 \end{figure}
 
-The model was trained in a dataset composed by 110 OCT B-scans of size 512*740 pixels annotated by two expert ophtalmologists. Using a 8-fold cross validation method, the results indicate a higher dice overlap score against other common used methods as U-net or FCN.
+The model was trained on a dataset consisting of 110 OCT B-scans of size 512$\times$740 pixels annotated by two experienced  ophtalmologists. Using a 8-fold cross validation, the results show a higher Dice overlap score compared to other commonly used methods, such as U-net or FCN.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./images/relaynet-predictions.png}
-    \caption{OCT B-scan predictions using ReLaynet architecture model. In average the proposed model had a ILM's dice overlap score of 0.90 against U-net's 0.86 and 0,87 for the model known as Layer specific structured edge learning with  Graph based dynamic programming  \cite{Roy2017}.}
+    \caption{OCT B-scan predictions using ReLaynet architecture model. On average, the proposed model had in case of the ILM a Dice overlap score of 0.90 compared to the 0.86 of U-net and 0,87 for the model known as Layer specific structured edge learning with a graph-search based dynamic programming  \cite{Roy2017}.}
 \end{figure}
 
-Maloca et al. \cite{Maloca2019} validated the usage of deep learning methods by implementing a U-net CNN trained on a dataset of 2070 B-scans. The data was annotated manually by segmenting 4 compartments corresponding to the vitreous, retina, choroid and sclera. This was performed by identifying the ILM, the choriocapillaris (CC) and CSI. In this work the use of the choriocapillaris was preferred due to the thinness of the BM in OCT scans which makes it unrecognizable.
+Maloca et al.~\cite{Maloca2019} validated the use of deep learning methods by implementing a U-net CNN trained on a dataset of 2070 B-scans. The data were manually annotated by segmenting 4 compartments corresponding to the vitreous, retina, choroid and sclera. This was done by identifying the ILM, the choriocapillaris and CSI. In \cite{Maloca2019}, the use of the choriocapillaris was preferred because BM is so thin in OCT scans that it cannot be detected.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./images/maloca-unet.png}
-    \caption{Depiction of the U-net model used in \cite{Maloca2019}}
+    \caption{Representation of the U-net model used in \cite{Maloca2019}.}
 \end{figure}
 
-The metric used to measure the performance of the U-net model in \cite{Maloca2019} was the Intersection over Union (IoC) also known as Jaccard coefficient, where all the matching pixels between both images are divided between the total of pixels of both images, giving a clear measure of similarity between both images. The results indicate mean IoU scores of 0.9929 for vitreous, 0.9690 for retina, 0.8819 for choroid and 0.9768 for sclera when benchmarked to a validation dataset of 60 images. From these results the authors concluded that the outputs of the proposed CNN were on par with manual segmentations made by human experts.
+The metric used to measure the performance of the U-net model in \cite{Maloca2019} was the Jaccard coefficient, also known as Intersection over Union (IoC), where all the matching pixels between both images are divided by the total of pixels of both images, giving a clear measure of similarity between both images. The results show mean Jaccard coefficient scores of 0.9929 for the vitreous, 0.9690 for the retina, 0.8819 for the choroid and 0.9768 for the sclera when benchmarked to a validation dataset of 60 images. From these results the authors concluded that the outputs of the proposed CNN were on par with manual segmentations made by human experts.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{./images/maloca-segmentations-results.png}
-    \caption{Illustration of the predictions made by Maloca et al. A spectral-domain OCT image (A) and a swept-source OCT image (C) were automatically segmented by the CNN (B,D) in to the compartments vitreous (arrow), retina (arrowheads), choroid (double arrow heads), and sclera (asterisk) \cite{Maloca2019}.}
+    \caption{Illustration of the predictions made by Maloca et al.~\cite{Maloca2019}. A spectral-domain OCT image (A) and a swept-source OCT image (C) were automatically segmented by the CNN (B,D) in to the compartments vitreous (arrow), retina (arrowheads), choroid (double arrowheads), and sclera (asterisk) \cite{Maloca2019}.}
 \end{figure}
 
 
-Zheng et al. \cite{Zheng2020} proposed using a modified U-net architecture for automated segmentation of the choroid based on the Residual U-net model (ResNet) \cite{He2015} achieving higher performance with fewer parameters by using layers of residual functions. 
+Zheng et al.~\cite{Zheng2020} proposed to use a modified U-net architecture for automated choroidal segmentation based on the Residual U-net model (ResNet) \cite{He2015}, which achieves higher performance with fewer parameters by using layers of residual functions. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{./images/ResNet-architecture.png}
-    \caption{Residual U-net model proposed by \cite{He2015} and used in \cite{Zheng2020}}
+    \caption{Residual U-net model proposed by \cite{He2015} and used in \cite{Zheng2020}.}
 \end{figure}
 
-The model was applied to a dataset composed by 450 OCT B-scans that were augmented to 1436 scans of 2048*1561 pixels. The performance was measured using the intraclass correlation coefficient (ICC) which is described as the level of resemblance between two or more samples of the belong to a common group defined by a particular set of characteristics. In Zheng's paper the compartments were conformed by choroidal boundaries Bruch's Membrane and Choroidal Scleral Interface and a set of vasculature measurements such as the choroidal vascularity index (CVI), choroidal stromal index (CSI), luminal area (LA) ,stromal area (SA), the total choroidal area (TCA),and Choroidal Thickness (CT). For the CT the ICC between human and automated samples was 0.994 with a CoV of 2.284.For the other For the parameters CVI, CSI, LA, SA, and TCA, the value of ICC were 0.966, 0.977, 0.977, 0.964, 0.994 with CoValues of 2.230, 3.277, 1.653, 5.024, and 2.284, respectively.
+The model was applied to a dataset composed by 450 OCT B-scans that were augmented to 1436 scans of 2048$\times$1561 pixels. The performance was measured using the intraclass correlation coefficient (ICC), which is described as the degree of similarity between two or more samples of membership in a common group defined by a particular set of features. In Zheng et al.~\cite{Zheng2020}, the compartments were conformed by choroidal boundaries BM, CSI and a set of vasculature measurements such as the choroidal vascularity index (CVI), choroidal stromal index (CStrI), luminal area (LA), stromal area (SA), the total choroidal area (TCA), and Choroidal Thickness (ChT). For the ChT the ICC between human and automated samples was 0.994 with a CoV of 2.284. For the parameters CVI, CStrI, LA, SA, and TCA, the value of ICC were 0.966, 0.977, 0.977, 0.964, 0.994 with CoValues of 2.230, 3.277, 1.653, 5.024, and 2.284, respectively.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./images/choroidal-segmentation-zheng.png}
-    \caption{Predictions obtained by Zheng et al. (a) Raw OCT Scan (b) automatic identification of the upper and lower choroid boundaries; (c) binarization image of the choroid and (d) demarcation of luminal area (LA) and stromal area (SA) with red dotted line. \cite{Zheng2020}}
+    \caption{Predictions obtained by Zheng et al.~\cite{Zheng2020} (a) OCT raw scan (b) automated identification of the upper and lower choroid boundaries, (c) binarization image of the choroid,  (d) delineation  of luminal area, (LA) and stromal area (SA) with red dotted line.}
 \end{figure}
 
 
 
 
 
-\section{Discussion}\label{s:Discussion}
+\section{Material and Method}\label{s:MaterialMethod}
 
 In this section, we will detail the process of creating the framework from its inception point to evaluating the final output. In order to standardize its description we have chosen to fit our process to the machine learning workflow. 
 
@@ -430,7 +430,7 @@ class_weights = class_weight.compute_class_weight(
                      train_masks_reshaped_encoded)
 \end{lstlisting}
 
-Normalization of a vector in mathematics means dividing the vector by its norm \cite{Normalization_Vector_Machines:2001}. In other words, the idea is to make the Euclidean length of the vector equal to one. In neural networks, normalization is important to obtain good results and reduce the calculation time \cite{Normalizazion_NN}, and usually means re-scaling by the minimum and range of the vector, to make all the elements lie between 0 and 1. Normalisation is not a requirement for multi-layer perceptron but we still opted for it because our activation function, softmax (see sec. \ref{tech:softmax}), has a range of [0,1] and we therefore want to ensure that our target values lie within that range.
+Normalization of a vector in mathematics means dividing the vector by its norm \cite{Normalization_Vector_Machines:2001}. In other words, the idea is to make the Euclidean length of the vector equal to one. In neural networks, normalization is important to obtain good results and reduce the calculation time \cite{Normalizazion_NN}, and is usually referd in the neural network literature as re-scaling the data in the same range of values (usually between 0 and 1) for each input feature to minimize bias \cite{Normalizazion_NN_classification}. Normalization is not a requirement for multi-layer perceptron but we still opted to do it anyway because our activation function, softmax (see sec.~\ref{tech:softmax}), has a range of [0,1], so we want to ensure that our target values lie within this range.
 
 \begin{lstlisting}[caption={Normalize the data, the code can be found in the \emph{train.py} file}]
 #Normalize Data
@@ -440,14 +440,14 @@ train_images = normalize(train_images, axis=1)
 train_masks_input = np.expand_dims(train_masks, axis=3)
 \end{lstlisting}
 
-We can now split our data-set in two parts, one for the training and one for testing. We do this as a means of estimating classification accuracy \cite{DatasetSplitting:2011}. We chose to split that data-set in a 80\%-20\% \footnote{80\% of the images for the training set and the remaining 20\% for the testing set} proportion, as we don't have a a huge dataset we wanted to keep most of it for the training of the model.
+We can now split our data-set into two parts, one for the training and one for testing to estimate classification accuracy \cite{DatasetSplitting:2011}. We chose to split the dataset in a ratio of 80\% to 20\% \footnote{80\% of the images for the training set and the remaining 20\% for the validation set} in order to have images that the model does not process and carry out training validations.
 \begin{lstlisting}[caption={Dataset split for testing and training from the \emph{train.py} file}, label={lst:data-split}]
 # Picking 20% for testing and remaining for training
 from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(train_images, train_masks_input, test_size = 0.20, random_state = 0) 
 \end{lstlisting}
 
-Then we need to encode our label from categorical features to their numeric representation, as it is required for neural networks. We use \emph{to\_categorical} from Keras \cite{chollet2015keras} to convert our current class vector to its binary matrix representation.
+Then we need to encode our label from categorical features to their numeric representation, as required for neural networks. We use \emph{to\_categorical} from Keras \cite{chollet2015keras} to convert our current class vector into its binary matrix representation.
 
 \begin{lstlisting}[caption={Data conversion into categorical, code belongs in the \emph{train.py} file}, label={lst:data-categorical}]
 from keras.utils import to_categorical
@@ -455,9 +455,9 @@ train_masks_cat = to_categorical(y_train, num_classes=n_classes)
 y_train_cat = train_masks_cat.reshape((y_train.shape[0], y_train.shape[1], y_train.shape[2], n_classes))
 \end{lstlisting}
 
-Usually deep learning requires a large volume of data to have good performances, but as we saw in Sec. \ref{Methodology:data} we only have 755 OCT B-scans. We already use U-net (Sec.~\ref{tech:unet}) to overcome this problem because it was specially designed for small dataset usage, one top of that data augmentation can be added to artificially increase the number of data we feed to the model. Data augmentation is a widely adopted approach for increasing the amount of training data \cite{AugAndEval:2017} but it could be at the expense of a loss of quality as too harsh modifications lead to loss of information in the data. This is even more true in our case because the OCT B-scans are presuppose nanometer precision (see Sec. \ref{Methodology:data}), we therefore want to be cautious in the choice of augmentation parameters.
-We chose a rotation of maximum 5 degrees because after some testing we realized that more rotation would lead to too much loss on the borders of the images and as the scan are usually similarly in the spatial positioning of the layers it would mislead the model. The \emph{"reflect" fill-mode} to obtain a more consistent result to replace missing part of the images. We use an elastic function to compute the distortion, the function creates random displacement fields for height and width and smoothing the fields with a Gaussian. 
-\begin{lstlisting}[caption={Base generator for image augmentation, the definition of the 2 seperate generator (image and mask) can be found in \emph{train.py}}]
+Normally, deep learning requires a large amount of data to have good performances, but as we saw in Sec.~ \ref{ss:data_collection}, we only have 755 OCT B-scans. We already use U-net (Sec.~\ref{tech:unet}) to overcome this problem because it was specially designed to use small datasets. In addition, data augmentation can be added to artificially increase the number of data we feed to the model. Data augmentation is a widely adopted approach for increasing the amount of training data \cite{AugAndEval:2017} but it could come at the cost of a loss of quality, as too harsh modifications lead to loss of information in the data. This is even more true in our case because the OCT B-scans require micrometer precision (see Sec.~ \ref{ss:data_collection}), so we want to be careful in the choice of augmentation parameters.
+We chose a rotation of no more than 5 degrees, because after some testing, we realized that more rotation would result in too much loss at the edges of the images, and since the scans are generally similar in the spatial positioning of the layers, this would mislead the model. To obtain a more consistent result, we used the \emph{"reflect" fill-mode}  to replace missing part of the images. In addition, we used an elastic function to compute the distortion. This function generates random displacement fields for height and width and smooths the fields with a Gaussian. 
+\begin{lstlisting}[caption={Base generator for image augmentation, the definition of the 2 separate generators (image and mask) can be found in \emph{train.py}}]
 train_datagen= ImageDataGenerator(rotation_range=5,
     fill_mode="reflect",
     shear_range=5,
@@ -465,14 +465,14 @@ train_datagen= ImageDataGenerator(rotation_range=5,
 )
 \end{lstlisting}
 
-We use data generator to real-time data feed our Keras model with augmented data. Using data generator also means that if the dataset we use is to grow in the future we avoid the problem of having dataset that are memory consuming to load.
+We used data generator to feed our Keras model with augmented data in real time. Using data generator also means that if the dataset we use grows in the future, we avoid the problem of the dataset being loaded taking up a lot of memory.
 
 
 \subsection{Model Development}
 
-We based our model on the U-net architecture due to its flexibility to adapt to different types of images. We used a combination of an implementation made by Dr. Ronchetti (as part of a side project by \cite{Ronchetti2019}) and the youtuber DigitalSreeni \cite{DigitalSreeni}.
+We based our model on the U-net architecture because of its flexibility to adapt to different types of images. We used a combination of an implementation made by Dr.~Ronchetti (as part of a side project by \cite{Ronchetti2019}) and the youtuber DigitalSreeni \cite{DigitalSreeni}.
 
-According to the original U-net model, the contracting path is a combination of convolution and pooling operations as illustrated in Fig. \ref{fig:model}.
+According to the original U-net model, the contracting path is a combination of convolution and pooling operations as illustrated in Fig.~\ref{fig:model}.
 
 \begin{figure}[H]
     \centering
@@ -481,9 +481,9 @@ According to the original U-net model, the contracting path is a combination of 
     \label{fig:model}
 \end{figure}
 
-Our first convolutional layer has 64 filters as described in Lst. \ref{lst:conv2D-1}, we use a 3x3 kernel initialized by the keras initializer \emph{he\_normal} which draws samples from a truncated normal distribution centered on 0 with $stddev = sqrt(2 / fan\_in)$ where \emph{fan\_in} is the number of input units in the weight tensor. The layer uses the same padding to avoid the loss of data information and the activation function is the Rectified Linear Unit (relu) which fires the neuron for every positive value resulting from the convolution. 
+Our first convolutional layer has 64 filters. As described in Lst.~\ref{lst:conv2D-1}, we used a 3$\times$3 kernel initialized by the keras initializer \emph{he\_normal}, which draws samples from a truncated normal distribution centered at 0 with $stddev = sqrt(2 / fan\_in)$, where \emph{fan\_in} is the number of input units in the weight tensor. The layer uses the same padding to avoid the loss of data information, and the activation function is the Rectified Linear Unit (relu), which fires the neuron for every positive value resulting from the convolution. 
 
-It's important to mention that in order to avoid overfitting we drop 10\% out of the output data that runs through the network and finally we apply a pooling operation with a 2x2 kernel size in order to propagate the pixels with the most important features to the next neuronal layers.
+It\textquotesingle s important to mention that to avoid overfitting, we dropped 10\% out of the output data that runs through the network and finally we applied a pooling operation with a 2$\times$2 kernel size in order to propagate the pixels with the most relevant features to the next neuronal layers.
 
 \begin{lstlisting}[caption={Implementation of the first level of the contracting path, the rest of the layer can be found in the \emph{get\_unet()} method from \emph{model.py}}, label={lst:conv2D-1}]
 inputs = Input((img_rows=256, img_cols=256,1))
@@ -494,10 +494,10 @@ c1 = Conv2D(filters=64, kernel_size= (3, 3), activation='relu', kernel_initializ
 p1 = MaxPooling2D((2, 2))(c1)
 \end{lstlisting}
 
-The decoder part of the model is presented in Lst. \ref{lst:conv2D-9} and involves the implementation of a transposed convolution (also called deconvolution) which is the inverse operation of convolutions and instead of contracting the image it expands it. The output is then concatenated with the layers of the contracting path as described on Fig. \ref{fig:model} in order to add localization information \footnote{Refer to Sec. \ref{s:TechBack} for detailed explanations}.
+The decoder part of the model is presented in Lst.~\ref{lst:conv2D-9} and involves the implementation of a transposed convolution which reconstructs the spatial dimensions of the image. The output is then concatenated with the layers of the contracting path, as described on Fig.~\ref{fig:model}, in order to add localization information\footnote{We refer the interested reader to Sec.~\ref{s:TechBack} for more detailed explanations.}.
 
 
-Finally, the output is reduced to an image with 4 channels (one channel or class per each compartment in the OCT-scan) and a softmax activation function determines the probability that the pixel belongs to each one of these classes and place the pixel in the correct channel.
+Finally, the output is reduced to an image with 4 channels (one channel or class per each compartment in the OCT scan) and a softmax activation function determines the probability that the pixel belongs to each one of these classes and place the pixel in the correct channel.
 
 \begin{lstlisting} [caption={Implementation of the last level of the upsampling path (full code in \emph{model.py})}, label={lst:conv2D-9}]
 u9 = Conv2DTranspose(64, kernel_size=(2, 2), strides=(2, 2), padding='same')(c8)
@@ -510,14 +510,14 @@ outputs = Conv2D(4, (1, 1), activation='softmax')(c9)
 \end{lstlisting}
 \subsection{Model Training}\label{ss:model_training}
 
-The goal of training in deep learning algorithms is to minimize the loss or error of the gradient descent when optimizing the objective function. The learning rate dictates by how much the loss can be reduced in order to find a balance between the maximum accuracy of the learning process and the time invested \cite{Zhang2021}. It is a standard practice to find the learning rate by performing empiric experiments on the dataset. In our case, we used an algorithm to find the optimal learning rate according to our dataset. The implementation is provided by the Keras Learning Rate Finder \cite{chollet2015keras} and works by training the model against different learning rates and plotting the result of the loss against the learning rates. The rate where the slope of the curve generated is first negative and second more steep is the most efficient learning rate. 
+The goal of training in deep learning algorithms is to minimize the loss or error of the gradient descent when optimizing the objective function. The learning rate specifies by how much the loss can be reduced to find a balance between the maximum accuracy of the learning process and the time invested \cite{Zhang2021}. It is a standard practice to find the learning rate by performing empiric experiments on the dataset. In our case, we used an algorithm to find the optimal learning rate according to our dataset. The implementation is provided by the Keras Learning Rate Finder \cite{chollet2015keras} and works by training the model against different learning rates and plotting the result of the loss against the learning rates. The rate where the slope of the curve generated is first negative and second more steep is the most efficient learning rate. 
 
 \begin{lstlisting}[caption={Learning Rate Finder, the jupyter-notebook \emph{Learning\_Rate\_Finder.ipynb} is used to find the learning rate}, label={lst:learning-rate-finder}]
 lr_finder = LRFinder(model)
 lr_finder.find(X1, y_train_cat, start_lr=1e-17, end_lr=1, batch_size=32, epochs=10)
 \end{lstlisting}
 
-Given the model and the data selected, the algorithm finds that the most efficient learning rates are between 1e-4 and 1e-5 as demonstrated in Fig \ref{fig:lr_plot}. In consequence we have decided to use a learning rate of 1e-4 for our training, taking care of cross-validating the results with different learning rates and Keras callback ReduceLROnPlateau \cite{chollet2015keras} which reduces the learning rate automatically when it has not improved the loss during a given number of epochs.
+Given the model and the data selected, the algorithm finds that the most efficient learning rates are between 1e-4 and 1e-5, as shown in Fig.~ \ref{fig:lr_plot}. We therefore decided to use a learning rate of 1e-4 for our training, cross-validating the results with different learning rates and using the Keras callback ReduceLROnPlateau \cite{chollet2015keras}, which automatically reduces the learning rate, if it has not improved the loss during a given number of epochs.
 
 
 \begin{figure}[H]
@@ -528,9 +528,9 @@ Given the model and the data selected, the algorithm finds that the most efficie
 \end{figure}
 
 \subsubsection{Model A with Data Augmentation}
-In order to see the influence that data augmentation has on our dataset, we decided to train two different models. Model A will implement data augmentation as exposed in Sec. \ref{ss:datapreparation} and Model B will implement the raw dataset.
+In order to see what impact the data augmentation has on our dataset, we decided to train two different models. Model A implements data augmentation, as exposed in Sec.~\ref{ss:datapreparation} while Model B implements the raw dataset.
 
-Model A fit method can be seen in Lst. \ref{lst:fit-method:A}. Since we are using image augmentation and keras generator generates an unlimited number of images from our dataset we decided to show the algorithm only 100 images per epoch. Therefore, having 400 epochs would mean that the model process 40'000 images generated from a the training set containing 604 images. Certain authors \cite{Shorten2019, mikolajcyk2018} would argue that providing the model with such a large quantity of generated images would bias our results towards our own data distribution and the model would not be able to generalize further. However, since our dataset stems from a very limited subset of the Asian population we believe that by design the results of the model would already be biased towards the anatomic features of Asian eyes. Nevertheless, we implemented a cross validation method using 20\% of the original dataset whose results indicate that our training is not overfitting the data\footnote{See Sec. \ref{Results}}. Therefore, we do not believe that our model's ability to generalize the dataset is influenced by the number of images generated but the results are clearly biased towards a the Asian population and would be probably more successful for that kind of samples. The bias problem could only be solved by adding data from different populations so the model learns the characteristics of the human eye from all kinds of different humans. 
+Model A fitting method can be seen in Lst.~\ref{lst:fit-method:A}. Since we use image augmentation and keras generator creates an unlimited number of images from our dataset, we decided to ``show'' the algorithm only 100 images per epoch. Thus, 400 epochs would mean that the model processes 40'000 images generated from a the training set of 604 images. Some authors \cite{Shorten2019, mikolajcyk2018} would argue that providing the model with such a large set of generated images would likely bias our results towards our own data distribution and the model would not be able to generalize further. However, since our dataset stems from a very limited subset of the Asian population, we believe that the model\textquotesingle s results would already be biased by design towards the anatomic characteristics  of Asian eyes. Nevertheless, we implemented a cross validation method using 20\% of the original dataset whose results indicate that our training is not overfitting the data, see Sec.~\ref{Results}. Therefore, we do not believe that our model\textquotesingle s ability to generalize the dataset is affected by the number of images generated, but the results are clearly biased towards the Asian population and would be probably more successful for that type of samples. The bias problem could only be solved by adding data from different populations so that the model learns the characteristics of the human eye from all possible different individuals. 
 
 \begin{lstlisting}[caption={Model A training parameters, this is a code snippet from the  \emph{train\_model\_A} method in \emph{train.py}}, label={lst:fit-method:A}]
 history = model.fit(train_generator,
@@ -562,7 +562,7 @@ history = model.fit(train_generator,
 
 \subsubsection{Model B without Data Augmentation}
 
-Model B was implemented over the raw dataset with the idea of cross validate the results and check the influence of image augmentation in our results. In this case, as seen in Lst. \ref{lst:fit-method-B} the input data comes directly from the numpy arrays created when splitting and converting the data to categorical in Lst.\ref{lst:data-split} and \ref{lst:data-categorical} 
+Model B was implemented over the raw dataset to cross validate the results and check the influence of image augmentation on our results. In this case, as seen in Lst. \ref{lst:fit-method-B} the input data comes directly from the numpy arrays created when splitting and converting the data into categorical data in Lst.~ref{lst:data-split} and \ref{lst:data-categorical}. 
 
 \begin{lstlisting}[caption={Model B training parameters, this is a code snippet from the  \emph{train\_model\_B} method in \emph{train.py}},label={lst:fit-method-B}]
 history = model.fit(x_train, y_train_cat,
@@ -594,34 +594,36 @@ history = model.fit(x_train, y_train_cat,
 \end{lstlisting}
 
 \subsection{Model Evaluation}
-In order to evaluate the performance of our models we use different measures including Jaccard coefficient also called Intersection over Union (IoU). This measure is typically used to evaluate the similarity between two arbitrary shapes and is invariant to the scale of the problem considered because it encodes the shape properties of the objects being compared in the region property before computing a normalized measure that focuses on their surface\cite{IoU:2019}.
+In order to evaluate the performance of our models we use several similarity measures, including the Jaccard coefficient, also called Intersection over Union (IoU), see Eq.~(\ref{eqn:Jaccard}). This measure is typically used to evaluate the similarity  between two arbitrary shapes and is invariant to the scale of the problem considered, because it encodes the shape-properties of the objects (like their width and height) and focuses the comparison of their areas or volumes.
+\cite{IoU:2019}.
 
-\begin{figure}[H]
-   \[ J(A,B) = \frac{|A\cap B|}{|A\cup B|}\]
-   \caption{Jaccards Coefficient Formula}
-\end{figure}
+\begin{equation}
+\label{eqn:Jaccard}
+J(A,B) = \frac{|A\cap B|}{|A\cup B|}
+\end{equation}
 
-The Jaccard's similarity coefficient between two datasets A and B is the result of dividing the number of common features between A and B, by the number the total number of features of both datasets \cite{Niwattanakul2013}.
-In image classification tasks that involve classifying individual pixels, this is equivalent to say the number of pixels that overlap in the prediction and the ground truth is divided by the total number of pixels of the image. This measure allows us to compare the similarity between our model prediction and the ground truth by returning the percentage of correctly classified pixels. 
-We have decided against accuracy as a performance measure in our project, since it doesn't offer an accurate measure of the performance for semantic segmentation tasks. Accuracy is measured by the number of correct predictions out of the total number of predictions. Suppose that we have 97\% accuracy, it means that 3\% of the pixels are not well classified, with a 500x768 image this gives us 11'250 misclassified pixels. This result does not offer any information about how the model performs at a class level. Furthermore, since in semantic segmentation is common to have classes whose weight in the final image is higher than others they will be overrepresented against minor classes in the final result. The reason is because there are significantly more pixels that will be correctly classified than those within a class with low weight. 
-A confusion matrix allows to evaluate the model performance in a simple way to compare the predicted values with the ground-truth and can be represented like this \cite{ConfusionMatrix}:
+The Jaccard similarity coefficient between two datasets A and B is the result of dividing the number of common features between A and B by the total number of features of both datasets \cite{Niwattanakul2013}.
+In image classification tasks that involve classifying individual pixels, this is equivalent to dividing  the number of pixels that overlap in the prediction and ground truth by the total number of pixels of the image. With this measure, we can compare the similarity between our model prediction and the ground truth by returning the percentage of correctly classified pixels. 
+We have decided against accuracy as a performance measure in our project, since it does not provide enough detail for semantic segmentation tasks. Accuracy is measured by the number of correct predictions relative to the total number of predictions. Assuming we have 97\% accuracy, this means that 3\% of the pixels are not well classified. For a 500$\times$768 image this results in 11'250 misclassified pixels. This result provides no information about how the model performs at the class level. Furthermore, since in semantic segmentation it is common to have classes whose weight in the final image is higher than the others; such classes will be overrepresented in the final result compared to the minor classes. The reason is that  there are significantly more pixels that will be correctly classified than those within a class with low weight. 
+
+Using a confusion matrix allows the performance of the model to be evaluated in a simple way by comparing the predicted values to the ground truth, and can be represented as follows \cite{ConfusionMatrix}:
     \begin{table}[H]
         \begin{tabular}{lll}
         \cline{2-3}
-            \multicolumn{1}{l|}{}                                 & \multicolumn{1}{l|}{\textbf{Predicted Negative}} & \multicolumn{1}{l|}{\textbf{Predicted positive}} \\ \hline
-            \multicolumn{1}{|l|}{\textbf{Ground-truth Negative}} & \multicolumn{1}{l|}{True negative (TN)}          & \multicolumn{1}{l|}{False Positive (FP)}         \\ \hline
-            \multicolumn{1}{|l|}{\textbf{Ground-truth Positive}}  & \multicolumn{1}{l|}{False Negative (FN)}         & \multicolumn{1}{l|}{True Positive (TP)}          \\ \hline
+            \multicolumn{1}{l|}{}                                 & \multicolumn{1}{l|}{\textbf{predicted negative}} & \multicolumn{1}{l|}{\textbf{predicted positive}} \\ \hline
+            \multicolumn{1}{|l|}{\textbf{ground truth negative}} & \multicolumn{1}{l|}{true negative (TN)}          & \multicolumn{1}{l|}{false positive (FP)}         \\ \hline
+            \multicolumn{1}{|l|}{\textbf{ground truth positive}}  & \multicolumn{1}{l|}{false negative (FN)}         & \multicolumn{1}{l|}{true positive (TP)}          \\ \hline
         \end{tabular}
-        \caption{Confusion Matrix}
+        \caption{Confusion matrix}
     \end{table}
 
-Using the confusion matrix we can then compute two metrics that we use for model evaluation: sensitivity and specificity. 
-The sensitivity can be described as the proportion classified pixels among the true positive, it shows the rate of relevant pixels that were correctly classified. 
+With the confusion matrix we can calculate two metrics that we use for model evaluation: sensitivity and specificity. 
+The sensitivity can be described as the proportion of correctly classified pixels among the true positive and false negatives, it shows the rate of relevant classified pixels classified. 
 
-The specificity measures the ability to correctly reject the pixels that do not belong in a class. In other words the number of true negatives divided by the sum of the true negatives and false positives. Sensitivity measures  the proportion of actual positive cases that were correctly predicted, while specificity is used to determine the proportion of actual negative cases that were correctly predicted, giving a sense of the ability of our model to reject pixels that do not belong to a certain class. 
+The specificity measures the ability to correctly reject the pixels that do not belong to a class. Consequently, specificity corresponds to the number of true negatives divided by the sum of the true negatives and false positives. Summarizing, while the sensitivity measures the proportion of true positive cases that were correctly predicted, the specificity can be used to determine the proportion of true negative cases that were correctly predicted, giving a sense of the ability of our model to reject pixels that do not belong to a particular class. 
 
 
-\section{Results}
+\section{Results and Discussion}
 
 \begin{figure} \label{fig:results_modelA}
    \centering
@@ -643,7 +645,7 @@ The specificity measures the ability to correctly reject the pixels that do not 
     \caption{}
     \label{fig:results:A:c}
    \end{subfigure}
-   \caption{Results of the CNN's prediction on the validation set of Model A}
+   \caption{Results of CNN prediction for the validation set of Model A}
   \label{Results}
 \end{figure}
 
@@ -667,16 +669,16 @@ The specificity measures the ability to correctly reject the pixels that do not 
     \caption{}
     \label{fig:results:B:c}
    \end{subfigure}
-   \caption{Results of the CNN's prediction on the validation set of Model B}
+   \caption{Results of CNN prediction for the validation set of Model B}
   \label{fig:results_modelB}
 \end{figure}
 
-After training and cross validation, Model A had a mean Jaccard's coefficient of 96.78\% on the validation set. On a class level, the results were slightly better on the vitreous with 99.55\%, 96.97\% for retina, 94.16\% for choroid and 96.41\% for sclera.
-The model had a mean of 97.80\% sensitivity referring to the overall ability to classify accurately relevant pixels. On the other end, the mean specificity was 99.52\% which means that the model presents a high performance at rejecting pixels whenever they do not belong to a certain class. 
+After training and cross validation, Model A had a mean Jaccard coefficient of 96.78\% on the validation set. At a class level, the results were slightly better on the vitreous with 99.55\%, 96.97\% for retina, 94.16\% for choroid and 96.41\% for sclera.
+The model had a mean of 97.80\% sensitivity referring to the overall ability to accurately classify relevant pixels. On the other hand, the mean specificity was 99.52\% indicating that the model had a high performance in rejecting pixels when they did not belong to a particular class. 
 
-Model B presented a mean Jaccard's coefficient of 98.01\%. On a class level the results were: 99.82\% for vitreous, 98.62\% for retina, 96.03\% for choroid and 97.59\% for sclera. Its sensibility was 96.72\% and mean specificity 99.65\%.
+Model B presented a mean Jaccard coefficient of 98.01\%. At a class level the results were: 99.82\% for vitreous, 98.62\% for retina, 96.03\% for choroid and 97.59\% for sclera. Its average sensibility was 96.72\% while its specificity 99.65\%.
 
-According to a similar research article called \emph{Validation of automated artificial intelligence segmentation of optical coherence tomography images}  published by Peter Maloca et al., their CNN predictions's mean Jaccard's coefficient for vitreous was 99.29\%, 96.90\% for retina, 88.17\% for choroid and 97.68\% for sclera, concluding that the CNN's compartmentalization of OCT scans was comparable to that of human graders. \cite{Maloca2019} 
+According to a similar research article \cite{Maloca2019}, the mean Jaccard coefficient of the CNN predictions obtained there was 99.29\% for the vitreous, 96.90\% for the retina, 88.17\% for the choroid and 97.68\% for the sclera, suggesting that the CNN compartmentalization of OCT scans was comparable to that of human graders \cite{Maloca2019}. 
 
 
 \begin{figure}[H]
@@ -693,7 +695,7 @@ According to a similar research article called \emph{Validation of automated art
   \caption{Model B}
   \label{fig:modelb_jaccard}
 \end{subfigure}
-\caption{Jaccard's Coefficient Results}
+\caption{Jaccard Coefficient Results}
 \label{fig:jaccard_results}
 \end{figure}
 
@@ -733,8 +735,7 @@ According to a similar research article called \emph{Validation of automated art
 \label{fig:specificity_results}
 \end{figure}
 
-
-In order to quantify the error between our models' output and the ground truth, the loss function needs to be minimized as stated in Sec. \ref{ss:model_training}. After 400 epochs Model A had a training loss of 0.046, validation loss was 0.038. For Model B the training lasted 100 epochs and the training loss was 0.016 and validation loss 0.027 as can be seen in Fig. \ref{fig:modelloss}. The fact that the trend in these two metrics remained similar between the training and validation stage and also tending to 0 indicates that our model is neither overfitting nor underfitting the data \cite{DIDLBook}. 
+In order to quantify the error between our models\textquotesingle output and the ground truth, the loss function needs to be minimized, as described in Sec.~\ref{ss:model_training}. After 400 epochs, Model A had a training loss of 0.046 and the validation loss was 0.038. For Model B, the training lasted 100 epochs, the training loss was 0.016 while the validation loss was 0.027, as can be seen in Fig.~\ref{fig:modelloss}. The fact that the trend in these two metrics remained similar between the training and validation stage and also tended toward 0 indicates that our model neither overfits nor underfits the data \cite{DIDLBook}. 
 
 \begin{figure}[H]
    \centering
@@ -750,11 +751,11 @@ In order to quantify the error between our models' output and the ground truth, 
     \caption{Model B}
     \label{fig:loss_b}
    \end{subfigure}
-   \caption{Loss function minimisation}
+   \caption{Loss function minimization}
    \label{fig:modelloss}
 \end{figure}
 
-Aiming to analyse the robustness of our results, a set of statistical scores and tests were calculated. The pixel detailed information on the predictions allowed us to locate the tissue boundaries ILM, BM and CSI. Using this information we calculated the retinal and choroidal thickness for both the ground truth annotations and their predictions. Calculating both tissue layer's thickness allows us to compare further the resulting error find the degree of confidence of both models. The outcome of these tests are described in table \ref{tab:statistical_tests}.
+With the aim of analyzing the robustness of our results, a series of statistical scores and tests were calculated. The pixel-precise information on the predictions allowed us to locate the tissue boundaries ILM, BM and CSI. Using this information we calculated the retinal and choroidal thickness for both the ground truth annotations and their predictions. Calculating the thickness of both tissue layers allows us to further compare the resulting error and find the degree of confidence of both models. The results of these tests are described in Table \ref{tab:statistical_tests}.
 \begin{table}[H]
     \begin{tabular}{l c|c|c|c|c}
          \textbf{Model} &\textbf{Layer} & \textbf{Test}& \textbf{P-value}  \\
@@ -772,7 +773,7 @@ Aiming to analyse the robustness of our results, a set of statistical scores and
     \label{tab:statistical_tests}
 \end{table}
 
-Collecting the error expressed in micrometers allows us to understand how far the predictions were from the truth. The result of this comparison can be found in table \ref{tab:Error_Scores}. The Mean Absolute Error (MAE) describes  that both models have an average error under 3.5 $\mu m$ for both layers. Root Mean Squared Error (RMSE) as opposed to the absolute version penalizes the extreme values, therefore the measurements observed in averaging the data were significantly larger and tell us that on average when our models make a mistake the error can be quite significant, specially for Model A (trained using image augmentation) and the Choroid compartment of Model B. However this was not an often case when observing the low mean MAE's measures.
+Collecting the error, expressed in micrometers, allows us to understand how far the predictions were from the ground truth. The result of this comparison can be found in table \ref{tab:Error_Scores}. The Mean Absolute Error (MAE) describes that both models have an average error under \SI{3.5}{\micro\metre} for both layers. Root Mean Squared Error (RMSE) penalizes the extreme values, unlike the absolute version, so the readings observed when averaging the data were significantly larger, telling us that on average, when our models make an error, such an error can be quite significant, especially for Model A (trained using image augmentation) and the choroid compartment of Model B. However, this was not an often case given the low mean MAE readings and the scatter plots in Fig.~\ref{fig:retinal_thickness_scatterplots} and \ref{fig:choroidal_thickness}.
 
 \begin{table}[H]
     \begin{tabular}{l c|c|c|c|c}
@@ -797,16 +798,16 @@ Collecting the error expressed in micrometers allows us to understand how far th
   \centering
   \includegraphics[width=\linewidth]{./results/model_A_retinal_thickness.png}
   \caption{Model A}
-  \label{fig:model_a_specificity}
+  \label{fig:model_a_retinal_thickness}
 \end{subfigure}
 \begin{subfigure}{1\textwidth}
   \centering
   \includegraphics[width=\linewidth]{./results/model_B_retinal_thickness.png}
   \caption{Model B}
-  \label{fig:modelb_specificity}
+  \label{fig:model_b_retinal_thickness}
 \end{subfigure}
-\caption{Retinal Thickness Measures ($\mu m$)}
-\label{fig:specificity_results}
+\caption{Retinal Thickness Measures (\SI{}{\micro\metre})}
+\label{fig:retinal_thickness_scatterplots}
 \end{figure}
 
 \begin{figure}[H]
@@ -815,42 +816,39 @@ Collecting the error expressed in micrometers allows us to understand how far th
   \centering
   \includegraphics[width=\linewidth]{./results/model_A_choroidal_thickness.png}
   \caption{Model A}
-  \label{fig:model_a_specificity}
+  \label{fig:model_a_choroidal_thicknesss}
 \end{subfigure}
 \begin{subfigure}{1\textwidth}
   \centering
   \includegraphics[width=\linewidth]{./results/model_B_choroidal_thickness.png}
   \caption{Model B}
-  \label{fig:modelb_specificity}
+  \label{fig:model_b_choroidal_thickness}
 \end{subfigure}
-\caption{Choroidal Thickness Measures ($\mu m$)}
-\label{fig:specificity_results}
+\caption{Choroidal Thickness Measures (\SI{}{\micro\metre})}
+\label{fig:choroidal_thickness}
 \end{figure}
-
-These results validate and indicate that an automated generation of synthetic ground truth for ophthalmic medical image analysis is technically feasible and produces segmentation maps similar to those of an expert ophthalmologist. 
 
 \section{Conclusion}
 
-Analysing the results of Model A and Model B we conclude that there is a high influence of image augmentation in the training of CNNs. Model B was trained during 100 epochs with a limited non-augmented dataset and it was able to learn better the features of the scans presenting a better Jaccard index than model A trained with augmentation (98,01\% vs 96,78\% respectively). Image Augmentation in this case is used to generate realistic transformations that can help the model to detect important features and to generalize the prediction on other type of OCT data even if in this case the evaluation measure takes a toll product of the randomness and number of augmented images. Model B also has a higher degree of sampling bias since the amount of images is relatively low and the distribution of features might not be representative enough to detect certain kind of characteristics present in other OCT scans either made with other devices or performed on different ethnic groups. Generally, sampling bias cannot be solved by artificially augmenting the images since the model only is able to learn from one type of population. In this case, machine learning engineers and healthcare professionals that use such a ML system need to be aware of what data was used to train the model and the influence that these can have in the results in relation with the target population that they address.
+When we analyze the results of Model A and Model B, we conclude that the influence of image augmentation on the training of CNNs is quite strong. Model B was trained during 100 epochs with a limited non-augmented dataset and was more capable of learning the features of the scans, showing a better Jaccard coefficient than Model A trained with augmentation (98.01\% vs.~96.78\% respectively). Image augmentation is used in this case to generate realistic transformations that can help the model to detect important features and to generalize the prediction to other type of OCT data even if in this case the evaluation measure takes a toll due to the randomness and the number of augmented images. Model B also has a higher degree of sampling bias because the amount of images is relatively small and the distribution of features might not be representative enough to detect certain kind of characteristics that are present in other OCT scans acquired either with other devices or from different ethnic groups.In general, sampling bias cannot be solved by artificially augmenting the images because the model can only learn from one type of population. In this case, machine learning engineers and healthcare professionals using such a machine learning system need to be aware of the data used to train the model and how it may affect the results with respect to the target population they are addressing.
 
+The influence of inter- and intra- observer variability among experts in annotating data \cite{Maloca2019, Maloca2021, Ronchetti2019} can lead a bias in the outputs of the model \cite{Gabr2016}. The problem arises from the dependence of supervised machine learning on ground truth to learn the features in the training data. Our model is expected to rely heavily on the agreement of the selected experts on which features on OCT scans define the position of the different boundaries used to separate the layers. Unfortunately, this can have a great impact on the final results, as the model be as accurate as the ground truth provided.  
 
-The influence of the inter and intra observer variability seen among experts when annotating data \cite{Maloca2019, Maloca2021, Ronchetti2019} may lead to 
-influence of operator bias in the outputs of the model \cite{Gabr2016}. The problem arises from the reliance of supervised machine learning in the ground truth to learn the features of in the training data. It is expected that our model is highly biased towards the selected experts' agreement on what features on OCT scans define the position of the different boundaries used to separate the layers. Unfortunately, this can have a great impact on the final results since the model can only perform as accurately as the ground truth provided. 
+From a medical perspective, an automated system that segments the 4 compartments present in an OCT scan means a time savings in manually segmenting each B-scan. These time could be dedicated to enhance the care of the patient. However, since an operator bias is present in the outputs of the models, machine learning engineers must ensure that training is performed with data that meets high quality standards for segmentation accuracy.
 
-From a medical perspective having an automated system that segments the 4 compartments present in an OCT scan means saving time invested in manually segmenting each B-scan. These time could be dedicated to enhance the care of the patient. However, since an operator bias is present in the outputs of the models, ML engineers need to ensure that training is performed using data following high standards of quality regarding the accuracy of the segmentations.
-
-All in all, our framework is able to learn the features needed to accurately segment the OCT scans. However, it was noticed that artifacts introduced because of different conditions during the scanning process (brightness, eye position, band selection) can have a negative impact on the learning process, therefore, we could expect that raising the quality of the scans will lead to first a lower inter and intra observer variability and second a higher Jaccard coefficient which results on more accurate outputs.
+Summarizing, our framework is able to learn the features needed to accurately segment the OCT scans. However, it was found that artifacts introduced due to different conditions during the scanning process (brightness, eye position, band selection) can have a negative impact on the learning process. Therefore, we could expect that an increase in the  quality of the scans would lead, firstly, to a lower inter- and intra- observer variability and, secondly, to a higher Jaccard coefficient, resulting in more accurate outputs.
 
 
 
 \section{Future Work}
 
-Further research into the topic would include dedicating significant resources to create a more representative dataset which would include OCT scans from different populations in order for the model to learn anatomical differences across different ethnic groups \cite{Consejo2020, Lin2009}. On the other hand, methods for accurately detecting the real position of every layer need to be implemented in order to avoid as much as possible the operator bias and interobserver variability. A suggested methodology might be to perform OCT scans on postmortem human eyes, manually annotate the segmentations from both the B-Scans and a posterior forensic analysis using a corresponding histopathology \cite{IOVINO2017, Mcnabb2009, Nioi2019} and correlate the data sources. Adding samples using this approach to our current dataset could improve the model learning process by avoiding the errors created by the presence of optical artifacts in the OCT scans resulting in more accurate ground truth. It would be expected that by having a clearer image, the inter and intra expert variability is minimal. This would help the model to identify features on boundaries that were missed in the current project as a result of the operator bias.
+Further research on this topic would involve dedicating significant resources to create a more representative dataset so that the model can learn anatomical differences between different ethnic groups \cite{Consejo2020, Lin2009}. On the other hand, methods for accurately detecting the real position of every layer must be implemented to avoid operator bias and inter-observer variability. A suggested methodology might be to perform OCT scans on postmortem human eyes, manually annotate the segmentations from both the B-Scans and a posterior forensic analysis using an appropriate histopathology \cite{IOVINO2017, Mcnabb2009, Nioi2019} and correlate the data sources. Adding samples with this approach to our current dataset could improve the model learning process by avoiding the errors created by the presence of optical artifacts in the OCT scans, resulting in more accurate ground truth. It would be expected that by having a clearer image, the inter- and intra-observer variability would be minimal. This would help the model to identify features on boundaries that were missed in the current project as a result of the operator bias.
 
-In order to improve the model outputs' Jaccard's coefficient, other ML models shall be implemented. Particularly implementing residual functions (Resnet model) might be beneficial for the overall performance as referred in \cite{He2015, Zheng2020}. The implementation could as well benefit from applying statistical rigourosity with techniques like variance analysis and p-tests and intragrader or intramodel comparisons. 
+In order to improve the Jaccard coefficient of the models outputs, other machine learning models shall be implemented. Particularly, the implementation of residual functions (Resnet model) might be beneficial for the overall performance, as described in \cite{He2015, Zheng2020}. The implementation could also benefit from the application of statistical rigourosity with techniques that involve intra-grader or intra-model comparisons. 
 
-Finally, stacking up a series of automatically segmented B-scans to obtain a C-scan would allow us to output volumetric measures that would directly allow ophtalmologists to come up with choroidal and retinal thickness avoiding the manual annotation process of each B-Scan generated by the OCT spectrometer. 
+Finally, stacking up a series of automatically segmented B-scans to obtain a C-scan would allow us to output volumetric measures that would directly allow ophtalmologists to come up with choroidal and retinal thickness without the manual annotation process of each B-scan generated by the OCT spectrometer. 
 
+In conclusion, our results demonstrated that an automated generation of synthetic ground truth for ophthalmic medical image analysis is technically feasible: we developed a framework able to generate synthetic ground truth for ophthalmic medical image analysis.
 
 \markboth{}{}
 
@@ -860,8 +858,15 @@ Finally, stacking up a series of automatically segmented B-scans to obtain a C-s
 \bibliography{bibli} % Entries are in the "bibi.bib" file
 
 
+
 \newpage
 
+\appendix
+\section{Appendices}
+%\addcontentsline{toc}{section}{Appendices}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\subsection{Declaration of Independence}
+\newpage
 \markboth{}{}
   \normalsize
 \begin{center}
@@ -874,17 +879,12 @@ Emeline Lieberherr, Rayner Oswaldo Zorrilla Alfonzo
 \begin{figure}[H]
     \includegraphics[width=0.5\textwidth]{./images/signatures.png}
 \end{figure}
-
 \newpage
-\appendix
-\section*{Appendices}
-\addcontentsline{toc}{section}{Appendices}
-\renewcommand{\thesubsection}{\Alph{subsection}}
-
 \subsection{Project Architecture Diagram}
 
 \includepdf[pages={1}]{./doc/appendix/projectArchitecture.pdf}
-\subsection{Planning of Work and Tasks for the Project}
+\newpage
+\subsection{Project Planner}
 \includepdf[pages={1}]{./doc/appendix/plannification.pdf}
 
 \end{document}
