@@ -221,7 +221,7 @@ If you want to process datasets by collecting and annotating pixels of images, y
 An important concept of CNN is spatial invariance\footnote{Spatial invariance refers to the invariance of the model towards spatial transformations of images such as rotation, translation and scaling.}, which refers to the ability of a CNN model to recognize and identify features even when the input is transformed or slightly modified. In other words, object recognition is not sensitive with respect to their exact position in the image. In computer vision, adding convolution to the neural network allows the addition of an inductive visual prior whereby objects can appear anywhere. Sharing the weights over the location of the object significantly reduces the number of parameters to be learned, the convolution is shifted when the object changes its position, meaning that if the object on the image is moved, the convolution moves, making it equivariant to the translation  \cite{CNNSpatialLocation}. The earliest layers of our network should be implementing translation invariance, i.e., it should respond similarly regardless of where objects appears in the image. In addition, they should focus on local regions (``locality principle'') without regard to the content of the image in distant regions \cite{DIDLBook}.
 
 The translation invariance implies that a shift in the input \(x\) should lead to a shift in the hidden representation \(H\) (i.e.~matrices in mathematics and two-dimensional tensors in code). 
-This is a covolution, because in effect, to obtain the value \([H]_{i,j}\), we weight the pixels at \((i + a, j + b)\) near the location \((i, j)\) with coefficients \([V]_{a,b}\):
+This is a convolution, because to obtain the value \([H]_{i,j}\), we weight the pixels at \((i + a, j + b)\) near the location \((i, j)\) with coefficients \([V]_{a,b}\):
  
 \begin{equation}
 \label{eqn:invariance}
@@ -266,10 +266,10 @@ as well as average-pooling would have given:
 
 \subsubsection{Softmax Operation}\label{tech:softmax}
 The softmax function is a logistic function generalized to multiple dimensions and is used as an activation function for neural networks. It is used to normalize the input vector z of K real numbers to a distribution consisting of K probabilities over predicted output classes. In this project, we have four classes (vitreous, retina, choroid, and sclera), so the use of softmax is relevant because it is a classifier that has excellent performance for multi-classification tasks and is often used as the final layer of the network \cite{SoftMaxClassification}. 
-The traditional softmax classifier can be described as follows: let K be the number of classes, with \(z_i\) we obtain the label and with \(z_j\) the j$^\mathrm{th}$ element of the vector of class scores, then we obtain \cite{SoftMaxClassification, DIDLBook}:
+The traditional softmax classifier can be described as follows: let K be the number of classes, \(x_i\) being the i$^\mathrm{th}$ imput feature with \(z_i\) being the label and \(z_j\) the j$^\mathrm{th}$ element of the vector of class scores, then we obtain \cite{SoftMaxClassification, DIDLBook}:
 
 \begin{equation}
-\sigma(z_{ij}) = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}
+softmax(z_{ij}) = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}
 \end{equation}
 After repeating the convolution and pooling functions until we have a pixel to classify,  the softmax function is used to determine the probability that this pixel belongs to a particular class.
 
@@ -283,13 +283,13 @@ The U-net is a CNN architecture developed for the field of biological images,  w
     \caption{U-net architecture \cite{Ronneberger2015}. The blue boxes represent multichannel feature maps, while the arrows represent the different mathematical operations described in Sec.~\ref{s:cnn}.    }
 \end{figure}
 
-The architecture is faster and less expensive than sliding windows because pixel features are aggregated to avoid classifying them individually. The second major contribution of \cite{Ronneberger2015} is the idea of using image augmentation to overcome the problem of image sparseness. By augmenting the image dataset, we apply a number of common image transformation operations to slightly modify the base image and create synthetic copies that supports learning. The details of these operations are explained in Sec.~\ref{ss:datapreparation}.
+The architecture is faster and less expensive than sliding windows because pixel features are aggregated to avoid classifying them individually. The second major contribution of \cite{Ronneberger2015} is the idea of using image augmentation to overcome the problem of image sparseness. By augmenting the image dataset, we apply a number of common image transformation operations to slightly modify the base image and create synthetic copies that reinforce learning. The details of these operations are explained in Sec.~\ref{ss:datapreparation}.
 
 \section{Previous Work}\label{s:prevWork}
 \subsection{Computer Vision Methods for Detection of Early Retinal and Choroidal Thickness Changes in Children}
 
 Computer vision methods for automated segmentation of inner retinal and choroidal layers obtained from OCT imaging \cite{Ronchetti2019statistic} can be used to generate a reliable set of annotated scans. 
-The contribution of this project lies in the documentation and explanation of the most frequent methods for measuring retinal (and choroidal) thickness from an algorithmic perspective to provide a framework to easily extract features from OCT B-scans. 
+The contribution of this project lies in the documentation and explanation of the most frequent methods for measuring retinal and choroidal thickness from an algorithmic perspective to provide a framework to easily extract features from OCT B-scans. 
 There are several approaches for detecting retinal boundaries in OCT B-scans, among them we can cite pixel intensity variations, texture analysis and graph search-based segmentation techniques. Pixel intensity variations are often used when calculating the overall retinal thickness \cite{Alonso-Caneiro2013}, the method involves a series of computer graphic processing steps where each pixel of the image is compared to a threshold value chosen according to the color intensity of the pixels that contain the information about the location of the boundary \cite{Fabritius:09}. 
 \\
 In the case of the ILM, it can be easily extracted because the lens pixels in the OCT scans are mostly black, while the pixels of the membrane are mostly white, this is mainly due to the density of the element, the more dense the element is, the whiter it will appear in the image \cite{Brar597}. Therefore, taking the image from the top left corner, one can run a search algorithm that finds the first white pixel \footnote{The first pixel that is above the threshold.} from top to bottom and returns its position. Running this same algorithm across the $x$-axis produces an array of pixels that can be smoothed using cubic-spline interpolations, corresponding to the ILM. The process for extracting BM\textquotesingle s inner-most layer is the same: since the sclera has opaque pixels that can be omitted by the algorithm, the process would start in the bottom left corner and runs the algorithm from the bottom up looking for white pixels until it reaches the BM. The CSI is ignored in this works since the choroid\textquotesingle s boundary with the sclera is way too difficult to identify using pixel intensity variation. 
@@ -315,7 +315,7 @@ In 2017, Roy et al.~\cite{Roy2017} proposed a fully convolutional deep learning 
     \caption{ReLaynet architecture \cite{Roy2017}.}
 \end{figure}
 
-The model was trained on a dataset consisting of 110 OCT B-scans of size 512$\times$740 pixels annotated by two experienced  ophtalmologists. Using a 8-fold cross validation, the results show a higher Dice overlap score compared to other commonly used methods, such as U-net or FCN.
+The model was trained on a dataset consisting of 110 OCT B-scans of size 512$\times$740 pixels annotated by two experienced  ophtalmologists. Using a 8-fold cross validation, the results show a higher Dice overlap score compared to other commonly used methods, such as U-net or Fully Convolutional Networks (FCN).
 
 \begin{figure}[H]
     \centering
@@ -331,7 +331,7 @@ Maloca et al.~\cite{Maloca2019} validated the use of deep learning methods by im
     \caption{Representation of the U-net model used in \cite{Maloca2019}.}
 \end{figure}
 
-The metric used to measure the performance of the U-net model in \cite{Maloca2019} was the Jaccard coefficient, also known as Intersection over Union (IoC), where all the matching pixels between both images are divided by the total of pixels of both images, giving a clear measure of similarity between both images. The results show mean Jaccard coefficient scores of 0.9929 for the vitreous, 0.9690 for the retina, 0.8819 for the choroid and 0.9768 for the sclera when benchmarked to a validation dataset of 60 images. From these results the authors concluded that the outputs of the proposed CNN were on par with manual segmentations made by human experts.
+The metric used to measure the performance of the U-net model in \cite{Maloca2019} was the Jaccard coefficient, also known as Intersection over Union (IoU), where all the matching pixels between both images are divided by the total of pixels of both images, giving a clear measure of similarity between both images. The results show mean Jaccard coefficient scores of 0.9929 for the vitreous, 0.9690 for the retina, 0.8819 for the choroid and 0.9768 for the sclera when benchmarked to a validation dataset of 60 images. From these results the authors concluded that the outputs of the proposed CNN were on par with manual segmentations made by human experts.
 
 \begin{figure}[H]
     \centering
@@ -623,7 +623,7 @@ The sensitivity can be described as the proportion of correctly classified pixel
 The specificity measures the ability to correctly reject the pixels that do not belong to a class. Consequently, specificity corresponds to the number of true negatives divided by the sum of the true negatives and false positives. Summarizing, while the sensitivity measures the proportion of true positive cases that were correctly predicted, the specificity can be used to determine the proportion of true negative cases that were correctly predicted, giving a sense of the ability of our model to reject pixels that do not belong to a particular class. 
 
 
-\section{Results and Discussion}
+ \section{Results and Discussion}
 
 \begin{figure} \label{fig:results_modelA}
    \centering
@@ -735,7 +735,7 @@ According to a similar research article \cite{Maloca2019}, the mean Jaccard coef
 \label{fig:specificity_results}
 \end{figure}
 
-In order to quantify the error between our models\textquotesingle output and the ground truth, the loss function needs to be minimized, as described in Sec.~\ref{ss:model_training}. After 400 epochs, Model A had a training loss of 0.046 and the validation loss was 0.038. For Model B, the training lasted 100 epochs, the training loss was 0.016 while the validation loss was 0.027, as can be seen in Fig.~\ref{fig:modelloss}. The fact that the trend in these two metrics remained similar between the training and validation stage and also tended toward 0 indicates that our model neither overfits nor underfits the data \cite{DIDLBook}. 
+In order to quantify the error between our models\textquotesingle  output and the ground truth, the loss function needs to be minimized, as described in Sec.~\ref{ss:model_training}. After 400 epochs, Model A had a training loss of 0.046 and the validation loss was 0.038. For Model B, the training lasted 100 epochs, the training loss was 0.016 while the validation loss was 0.027, as can be seen in Fig.~\ref{fig:modelloss}. The fact that the trend in these two metrics remained similar between the training and validation stage and also tended toward 0 indicates that our model neither overfits nor underfits the data \cite{DIDLBook}. 
 
 \begin{figure}[H]
    \centering
@@ -755,29 +755,11 @@ In order to quantify the error between our models\textquotesingle output and the
    \label{fig:modelloss}
 \end{figure}
 
-With the aim of analyzing the robustness of our results, a series of statistical scores and tests were calculated. The pixel-precise information on the predictions allowed us to locate the tissue boundaries ILM, BM and CSI. Using this information we calculated the retinal and choroidal thickness for both the ground truth annotations and their predictions. Calculating the thickness of both tissue layers allows us to further compare the resulting error and find the degree of confidence of both models. The results of these tests are described in Table \ref{tab:statistical_tests}.
-\begin{table}[H]
-    \begin{tabular}{l c|c|c|c|c}
-         \textbf{Model} &\textbf{Layer} & \textbf{Test}& \textbf{P-value}  \\
-         \hline
-         A & Retina & Mann-Whitney U-Test & 3.14e-5 \\
-         A & Choroid & Mann-Withney U-Test & 0.6483 \\
-         A & Retina & T-test & 1.25e-5 \\
-         A & Choroid & T-test & 0.6567 \\
-         B & Retina & Mann-Whitney U-Test & 0.1115 \\
-         B & Choroid & Mann-Withney U-Test & 0.3797 \\
-         B & Retina & T-test & 0.1009 \\
-         B & Choroid & T-test & 0.4571
-    \end{tabular}
-    \caption{Statistical Tests}
-    \label{tab:statistical_tests}
-\end{table}
-
-Collecting the error, expressed in micrometers, allows us to understand how far the predictions were from the ground truth. The result of this comparison can be found in table \ref{tab:Error_Scores}. The Mean Absolute Error (MAE) describes that both models have an average error under \SI{3.5}{\micro\metre} for both layers. Root Mean Squared Error (RMSE) penalizes the extreme values, unlike the absolute version, so the readings observed when averaging the data were significantly larger, telling us that on average, when our models make an error, such an error can be quite significant, especially for Model A (trained using image augmentation) and the choroid compartment of Model B. However, this was not an often case given the low mean MAE readings and the scatter plots in Fig.~\ref{fig:retinal_thickness_scatterplots} and \ref{fig:choroidal_thickness}.
+With the aim of analyzing the robustness of our results, a series of statistical scores and tests were calculated. The pixel-precise information on the predictions allowed us to localize the tissue boundaries ILM, BM and CSI. Using this information, we calculated retinal and choroidal thickness for both the ground truth annotations and their predictions. The subsequent recording of the error, expressed in micrometers, explains how far the predictions were from the ground truth. The result of this comparison can be found in Table \ref{tab:Error_Scores}. The Mean Absolute Error (MAE) shows that both models have an average error in the range of the pixel scaling (\SI{3.87}{\micro\metre}) for both layers. The Root Mean Squared Error (RMSE) penalizes the extreme values, unlike the absolute version, so that the observed measurements were significantly larger when the data were averaged. This tell us that on average, when our models make an error, such an error can be quite significant, especially for Model A (trained using image augmentation) and the choroidal compartment of Model B. However, given the low mean MAE values, the boxplots and the scatterplots in  Fig.~\ref{fig:retinal_thickness_scatterplots} and \ref{fig:choroidal_thickness}, this was not often the case.
 
 \begin{table}[H]
     \begin{tabular}{l c|c|c|c|c}
-         \textbf{Model} &\textbf{Layer} & \textbf{Score}& \textbf{Error($\mu m$)}  \\
+         \textbf{Model} &\textbf{Layer} & \textbf{Score}& \textbf{Error(\SI{}{\micro\metre})}  \\
          \hline
          A & Retina & Root Mean Squared Error &  8.5793 \\
          A & Choroid & Root Mean Squared Error & 25.4270 \\
@@ -788,9 +770,46 @@ Collecting the error, expressed in micrometers, allows us to understand how far 
          B & Retina & Mean Absolute Error & 1.0735 \\
          B & Choroid & Mean Absolute Error & 2.3225 \\
     \end{tabular}
-    \caption{Statistical Error Scores}
+    \caption{Root Mean Squared and Mean Absolute Errors}
     \label{tab:Error_Scores}
 \end{table}
+
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{1\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{./results/A_boxplot_Absolute_Error_retina.png}
+  \caption{Model A}
+  \label{fig:boxplot_a_retinal_thickness}
+\end{subfigure}
+\begin{subfigure}{1\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{./results/B_boxplot_Absolute_Error_retina.png}
+  \caption{Model B}
+  \label{fig:boxplot_b_retinal_thickness}
+\end{subfigure}
+\caption{Retinal thickness errors (in \SI{}{\micro\metre}), calculated as the absolute value of the difference between the manual expert annotations and the CNN predictions for the retinal boundaries ILM and BM. }
+\label{fig:retinal_thickness_boxplots}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{1\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{./results/A_boxplot_Absolute_Error_choroid.png}
+  \caption{Model A}
+  \label{fig:boxplot_a_choroidal_thickness}
+\end{subfigure}
+\begin{subfigure}{1\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{./results/B_boxplot_Absolute_Error_choroid.png}
+  \caption{Model B}
+  \label{fig:boxplot_b_choroidal_thickness}
+\end{subfigure}
+\caption{Choroidal thickness errors (in \SI{}{\micro\metre}), calculated as the absolute value of the difference between the manual expert annotations and the CNN predictions for the choroidal boundaries BM and CSI.}
+\label{fig:choroidal_thickness_boxplots}
+\end{figure}
 
 \begin{figure}[H]
 \centering
@@ -806,7 +825,7 @@ Collecting the error, expressed in micrometers, allows us to understand how far 
   \caption{Model B}
   \label{fig:model_b_retinal_thickness}
 \end{subfigure}
-\caption{Retinal Thickness Measures (\SI{}{\micro\metre})}
+\caption{Retinal thickness regression analysis.}
 \label{fig:retinal_thickness_scatterplots}
 \end{figure}
 
@@ -824,7 +843,7 @@ Collecting the error, expressed in micrometers, allows us to understand how far 
   \caption{Model B}
   \label{fig:model_b_choroidal_thickness}
 \end{subfigure}
-\caption{Choroidal Thickness Measures (\SI{}{\micro\metre})}
+\caption{Choroidal thickness regression analysis}
 \label{fig:choroidal_thickness}
 \end{figure}
 
